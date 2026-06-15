@@ -1,0 +1,38 @@
+version: "3.9"
+
+# Production overrides — use with:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  postgres:
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # Do NOT expose port 5432 in production
+    ports: []
+
+  backend:
+    restart: always
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_PROFILES_ACTIVE: prod
+    # Expose via reverse proxy only — not directly
+    ports: []
+
+  frontend:
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  postgres_data:
+    external: true
+    name: interviewflow_postgres_data

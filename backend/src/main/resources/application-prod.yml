@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    show-sql: false
+
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
+
+logging:
+  level:
+    com.interviewflow: WARN
+    root: WARN
