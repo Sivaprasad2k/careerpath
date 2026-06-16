@@ -2,8 +2,6 @@
 
 > A workflow-driven Job Application and Interview Tracking Platform.
 
-> Portfolio-grade Spring Boot + React project demonstrating engineering maturity.
-
 ---
 
 ## Architecture
