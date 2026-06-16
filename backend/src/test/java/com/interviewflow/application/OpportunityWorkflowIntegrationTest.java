@@ -128,7 +128,7 @@ class OpportunityWorkflowIntegrationTest extends AbstractIntegrationTest {
     @DisplayName("6. Schedule interview → INTERVIEW_SCHEDULED")
     void scheduleInterview_transitionsToInterviewScheduled() throws Exception {
         var request = new ScheduleInterviewRequest(
-                Instant.now().plus(1, ChronoUnit.DAYS), "Jane Doe", "Zoom", 45, "Tech screening prep");
+                "Technical", Instant.now().plus(1, ChronoUnit.DAYS), "Jane Doe", "Zoom", 45, "Tech screening prep", null);
 
         mockMvc.perform(post("/api/v1/opportunities/" + opportunityId + "/schedule-interview")
                         .header("Authorization", "Bearer " + accessToken)

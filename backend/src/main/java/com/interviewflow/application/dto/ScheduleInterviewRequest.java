@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import java.time.Instant;
 
 public record ScheduleInterviewRequest(
+        @NotBlank(message = "Round Type is required")
+        @Size(max = 100, message = "Round Type must not exceed 100 characters")
+        String roundType,
+
         @NotNull(message = "Interview scheduled date and time is required")
         Instant scheduledAt,
 
@@ -18,6 +22,9 @@ public record ScheduleInterviewRequest(
         Integer durationMinutes,
 
         @Size(max = 2000, message = "Notes must not exceed 2000 characters")
-        String notes
+        String notes,
+
+        @Size(max = 1000, message = "Outcome must not exceed 1000 characters")
+        String outcome
 ) {}
 

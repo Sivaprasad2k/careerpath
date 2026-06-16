@@ -5,6 +5,7 @@ import { opportunitiesApi } from '../../api/opportunitiesApi'
 import Modal from '../../components/ui/Modal'
 import StatusBadge from '../../components/ui/StatusBadge'
 import ApplicationDetailPanel from '../opportunities/ApplicationDetailPanel'
+import InterviewForm from '../opportunities/InterviewForm'
 import toast from 'react-hot-toast'
 import { CalendarIcon, BriefcaseIcon, DollarSignIcon, UserIcon, MapPinIcon, PlusIcon, HeartIcon, ClockIcon } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
@@ -272,126 +273,81 @@ export default function KanbanBoard({ opportunities }) {
 
       {/* ── Transition Inputs Modal ────────────────────────────────────── */}
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={`Move to ${transitionType}`}>
-        <form onSubmit={handleModalSubmit} className="space-y-4">
-          {transitionType === 'ASSESSMENT' && (
-            <div>
-              <label className="label">Assessment Deadline</label>
-              <input
-                type="datetime-local"
-                value={assessmentPayload.deadlineDate}
-                onChange={e => setAssessmentPayload({ deadlineDate: e.target.value })}
-                className="input"
-                required
-              />
-            </div>
-          )}
-
-          {transitionType === 'INTERVIEW' && (
-            <div className="space-y-4">
+        {transitionType === 'INTERVIEW' ? (
+          <InterviewForm
+            onSubmit={(payload) => {
+              transitionMutation.mutate({
+                id: targetOpp.id,
+                type: 'INTERVIEW',
+                payload
+              })
+            }}
+            onCancel={() => setModalOpen(false)}
+            isSubmitting={transitionMutation.isPending}
+          />
+        ) : (
+          <form onSubmit={handleModalSubmit} className="space-y-4">
+            {transitionType === 'ASSESSMENT' && (
               <div>
-                <label className="label">Scheduled Date & Time *</label>
+                <label className="label">Assessment Deadline</label>
                 <input
                   type="datetime-local"
-                  value={interviewPayload.scheduledAt}
-                  onChange={e => setInterviewPayload(p => ({ ...p, scheduledAt: e.target.value }))}
+                  value={assessmentPayload.deadlineDate}
+                  onChange={e => setAssessmentPayload({ deadlineDate: e.target.value })}
                   className="input"
                   required
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="label">Interviewer Name</label>
-                  <input
-                    type="text"
-                    value={interviewPayload.interviewerName}
-                    onChange={e => setInterviewPayload(p => ({ ...p, interviewerName: e.target.value }))}
-                    className="input"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label className="label">Platform</label>
-                  <input
-                    type="text"
-                    value={interviewPayload.platform}
-                    onChange={e => setInterviewPayload(p => ({ ...p, platform: e.target.value }))}
-                    className="input"
-                    placeholder="Zoom, Google Meet"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="label">Duration (minutes)</label>
-                  <input
-                    type="number"
-                    value={interviewPayload.durationMinutes}
-                    onChange={e => setInterviewPayload(p => ({ ...p, durationMinutes: e.target.value }))}
-                    className="input"
-                    min="5"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="label">Preparation Notes</label>
-                <textarea
-                  value={interviewPayload.notes}
-                  onChange={e => setInterviewPayload(p => ({ ...p, notes: e.target.value }))}
-                  className="input resize-none"
-                  rows={2}
-                  placeholder="Leetcode prep, research team, etc."
-                />
-              </div>
-            </div>
-          )}
+            )}
 
-          {transitionType === 'OFFER' && (
-            <div className="space-y-4">
-              <div>
-                <label className="label">Salary Package Offer *</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <DollarSignIcon size={14} className="text-gray-500" />
+            {transitionType === 'OFFER' && (
+              <div className="space-y-4">
+                <div>
+                  <label className="label">Salary Package Offer *</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <DollarSignIcon size={14} className="text-gray-500" />
+                    </div>
+                    <input
+                      type="text"
+                      value={offerPayload.salary}
+                      onChange={e => setOfferPayload(p => ({ ...p, salary: e.target.value }))}
+                      className="input pl-8"
+                      placeholder="e.g. $120,000 / yr"
+                      required
+                    />
                   </div>
+                </div>
+                <div>
+                  <label className="label">Offer Expiration Date</label>
                   <input
-                    type="text"
-                    value={offerPayload.salary}
-                    onChange={e => setOfferPayload(p => ({ ...p, salary: e.target.value }))}
-                    className="input pl-8"
-                    placeholder="e.g. $120,000 / yr"
-                    required
+                    type="datetime-local"
+                    value={offerPayload.offerExpiryDate}
+                    onChange={e => setOfferPayload(p => ({ ...p, offerExpiryDate: e.target.value }))}
+                    className="input"
                   />
                 </div>
               </div>
-              <div>
-                <label className="label">Offer Expiration Date</label>
-                <input
-                  type="datetime-local"
-                  value={offerPayload.offerExpiryDate}
-                  onChange={e => setOfferPayload(p => ({ ...p, offerExpiryDate: e.target.value }))}
-                  className="input"
-                />
-              </div>
-            </div>
-          )}
+            )}
 
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={transitionMutation.isPending}
-              className="btn-primary flex-1 justify-center"
-            >
-              {transitionMutation.isPending ? 'Updating…' : 'Confirm Stage Move'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setModalOpen(false)}
-              className="btn-secondary"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+            <div className="flex gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={transitionMutation.isPending}
+                className="btn-primary flex-1 justify-center"
+              >
+                {transitionMutation.isPending ? 'Updating…' : 'Confirm Stage Move'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setModalOpen(false)}
+                className="btn-secondary"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
       </Modal>
     </div>
   )

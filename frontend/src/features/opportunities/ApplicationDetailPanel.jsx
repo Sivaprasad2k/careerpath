@@ -11,6 +11,7 @@ import {
   PlusIcon, FileTextIcon, SendIcon, XIcon, DownloadIcon, ShieldAlertIcon, ClockIcon
 } from 'lucide-react'
 import Modal from '../../components/ui/Modal'
+import InterviewForm from './InterviewForm'
 
 const TRANSITIONS_CONFIG = {
   APPLIED: { label: 'Mark as Applied', type: 'APPLIED', style: 'btn-primary bg-indigo-600 hover:from-indigo-500' },
@@ -454,130 +455,81 @@ export default function ApplicationDetailPanel({ id, onClose }) {
                     </button>
                   </div>
 
-                  {activeTransition === 'ASSESSMENT' && (
-                    <div>
-                      <label className="label">Assessment Deadline</label>
-                      <input
-                        type="datetime-local"
-                        value={assessmentPayload.deadlineDate}
-                        onChange={e => setAssessmentPayload({ deadlineDate: e.target.value })}
-                        className="input"
-                        required
-                      />
-                    </div>
-                  )}
-
-                  {activeTransition === 'INTERVIEW' && (
-                    <div className="space-y-3">
-                      <div>
-                        <label className="label">Scheduled Time *</label>
-                        <input
-                          type="datetime-local"
-                          value={interviewPayload.scheduledAt}
-                          onChange={e => setInterviewPayload(p => ({ ...p, scheduledAt: e.target.value }))}
-                          className="input"
-                          required
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
+                  {activeTransition === 'INTERVIEW' ? (
+                    <InterviewForm
+                      onSubmit={(payload) => {
+                        transitionMutation.mutate({ type: 'INTERVIEW', payload })
+                      }}
+                      onCancel={() => setActiveTransition(null)}
+                      isSubmitting={transitionMutation.isPending}
+                      submitLabel="Confirm Stage Transition"
+                    />
+                  ) : (
+                    <>
+                      {activeTransition === 'ASSESSMENT' && (
                         <div>
-                          <label className="label">Interviewer</label>
+                          <label className="label">Assessment Deadline</label>
                           <input
-                            type="text"
-                            value={interviewPayload.interviewerName}
-                            onChange={e => setInterviewPayload(p => ({ ...p, interviewerName: e.target.value }))}
+                            type="datetime-local"
+                            value={assessmentPayload.deadlineDate}
+                            onChange={e => setAssessmentPayload({ deadlineDate: e.target.value })}
                             className="input"
-                            placeholder="Interviewer name"
+                            required
                           />
                         </div>
-                        <div>
-                          <label className="label">Platform</label>
-                          <input
-                            type="text"
-                            value={interviewPayload.platform}
-                            onChange={e => setInterviewPayload(p => ({ ...p, platform: e.target.value }))}
-                            className="input"
-                            placeholder="Zoom, Google Meet"
-                          />
+                      )}
+
+                      {activeTransition === 'OFFER' && (
+                        <div className="space-y-3">
+                          <div>
+                            <label className="label">Salary Package Offer *</label>
+                            <input
+                              type="text"
+                              value={offerPayload.salary}
+                              onChange={e => setOfferPayload(p => ({ ...p, salary: e.target.value }))}
+                              className="input"
+                              placeholder="e.g. $120,000 / yr"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="label">Offer Expiration Date</label>
+                            <input
+                              type="datetime-local"
+                              value={offerPayload.offerExpiryDate}
+                              onChange={e => setOfferPayload(p => ({ ...p, offerExpiryDate: e.target.value }))}
+                              className="input"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div>
-                        <label className="label">Preparation Focus Notes</label>
-                        <textarea
-                          value={interviewPayload.notes}
-                          onChange={e => setInterviewPayload(p => ({ ...p, notes: e.target.value }))}
-                          className="input resize-none"
-                          rows={2}
-                          placeholder="Core details to prepare..."
-                        />
-                      </div>
-                    </div>
-                  )}
+                      )}
 
-                  {activeTransition === 'OFFER' && (
-                    <div className="space-y-3">
-                      <div>
-                        <label className="label">Salary Package Offer *</label>
-                        <input
-                          type="text"
-                          value={offerPayload.salary}
-                          onChange={e => setOfferPayload(p => ({ ...p, salary: e.target.value }))}
-                          className="input"
-                          placeholder="e.g. $120,000 / yr"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="label">Offer Expiration Date</label>
-                        <input
-                          type="datetime-local"
-                          value={offerPayload.offerExpiryDate}
-                          onChange={e => setOfferPayload(p => ({ ...p, offerExpiryDate: e.target.value }))}
-                          className="input"
-                        />
-                      </div>
-                    </div>
+                      <button
+                        onClick={() => {
+                          let payload = {}
+                          if (activeTransition === 'ASSESSMENT') {
+                            if (!assessmentPayload.deadlineDate) {
+                              toast.error('Assessment deadline is required')
+                              return
+                            }
+                            payload = assessmentPayload
+                          }
+                          if (activeTransition === 'OFFER') {
+                            if (!offerPayload.salary.trim()) {
+                              toast.error('Salary Package Offer is required')
+                              return
+                            }
+                            payload = offerPayload
+                          }
+                          transitionMutation.mutate({ type: activeTransition, payload })
+                        }}
+                        disabled={transitionMutation.isPending}
+                        className="btn-primary w-full justify-center"
+                      >
+                        {transitionMutation.isPending ? 'Updating Stage…' : 'Confirm Stage Transition'}
+                      </button>
+                    </>
                   )}
-
-                  <button
-                    onClick={() => {
-                      let payload = {}
-                      if (activeTransition === 'ASSESSMENT') {
-                        if (!assessmentPayload.deadlineDate) {
-                          toast.error('Assessment deadline is required')
-                          return
-                        }
-                        payload = assessmentPayload
-                      }
-                      if (activeTransition === 'INTERVIEW') {
-                        if (!interviewPayload.scheduledAt) {
-                          toast.error('Scheduled Time is required')
-                          return
-                        }
-                        if (!interviewPayload.platform.trim()) {
-                          toast.error('Platform / Meeting Link is required')
-                          return
-                        }
-                        if (interviewPayload.notes && interviewPayload.notes.length > 2000) {
-                          toast.error('Notes must not exceed 2000 characters')
-                          return
-                        }
-                        payload = interviewPayload
-                      }
-                      if (activeTransition === 'OFFER') {
-                        if (!offerPayload.salary.trim()) {
-                          toast.error('Salary Package Offer is required')
-                          return
-                        }
-                        payload = offerPayload
-                      }
-                      transitionMutation.mutate({ type: activeTransition, payload })
-                    }}
-                    disabled={transitionMutation.isPending}
-                    className="btn-primary w-full justify-center"
-                  >
-                    {transitionMutation.isPending ? 'Updating Stage…' : 'Confirm Stage Transition'}
-                  </button>
                 </div>
               )}
 
@@ -698,71 +650,14 @@ export default function ApplicationDetailPanel({ id, onClose }) {
                   <div className="card bg-darkCard border border-darkBorder p-5 space-y-4">
                     <h3 className="text-xs font-black text-white uppercase tracking-widest">SCHEDULE LOOPS</h3>
                     
-                    <form onSubmit={handleScheduleLoopSubmit} className="space-y-4">
-                      {/* Round Type Selector */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="label">ROUND TYPE</label>
-                          <select
-                            value={scheduleLoop.roundType}
-                            onChange={(e) => setScheduleLoop(prev => ({ ...prev, roundType: e.target.value }))}
-                            className="input bg-darkSecondary"
-                          >
-                            <option value="Screening">Screening</option>
-                            <option value="Technical">Technical</option>
-                            <option value="Managerial">Managerial</option>
-                            <option value="Behavioral">Behavioral</option>
-                            <option value="System Design">System Design</option>
-                            <option value="HR">HR</option>
-                          </select>
-                        </div>
-
-                        {/* Meeting Link */}
-                        <div>
-                          <label className="label">MEETING LINK / PLATFORM *</label>
-                          <input
-                            type="text"
-                            value={scheduleLoop.platform}
-                            onChange={(e) => setScheduleLoop(prev => ({ ...prev, platform: e.target.value }))}
-                            className="input"
-                            placeholder="Google Meet, Zoom"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      {/* Scheduled Date & Time */}
-                      <div>
-                        <label className="label">SCHEDULED DATE & TIME *</label>
-                        <input
-                          type="datetime-local"
-                          value={scheduleLoop.scheduledAt}
-                          onChange={(e) => setScheduleLoop(prev => ({ ...prev, scheduledAt: e.target.value }))}
-                          className="input"
-                          required
-                        />
-                      </div>
-
-                      {/* Preparation Notes */}
-                      <div>
-                        <label className="label">PREPARATION NOTES</label>
-                        <textarea
-                          value={scheduleLoop.notes}
-                          onChange={(e) => setScheduleLoop(prev => ({ ...prev, notes: e.target.value }))}
-                          className="input resize-none"
-                          rows={3}
-                          placeholder="Focus areas, coding languages..."
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        className="btn-primary w-full justify-center py-2.5 font-bold"
-                        disabled={transitionMutation.isPending}
-                      >
-                        {transitionMutation.isPending ? 'Scheduling...' : '+ Add Round'}
-                      </button>
-                    </form>
+                    <InterviewForm
+                      onSubmit={(payload) => {
+                        transitionMutation.mutate({ type: 'INTERVIEW', payload })
+                      }}
+                      hideCancel={true}
+                      submitLabel="+ Add Round"
+                      isSubmitting={transitionMutation.isPending}
+                    />
                   </div>
 
                   {/* Scheduled Rounds List */}

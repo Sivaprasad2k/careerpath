@@ -120,6 +120,9 @@ public class OpportunityService {
     @Transactional
     public OpportunityResponse scheduleInterview(UUID id, ScheduleInterviewRequest request, UUID userId) {
         Map<String, Object> metadata = new HashMap<>();
+        if (request.roundType() != null) {
+            metadata.put("roundType", request.roundType());
+        }
         if (request.scheduledAt() != null) {
             metadata.put("scheduledAt", request.scheduledAt());
         }
@@ -134,6 +137,9 @@ public class OpportunityService {
         }
         if (request.notes() != null) {
             metadata.put("notes", request.notes());
+        }
+        if (request.outcome() != null) {
+            metadata.put("outcome", request.outcome());
         }
         return transition(id, userId, OpportunityStatus.INTERVIEW_SCHEDULED, metadata);
     }

@@ -8,8 +8,7 @@ import {
   CalendarIcon, BriefcaseIcon, ClockIcon, SearchIcon, FilterIcon,
   CheckCircle2Icon, AlertCircleIcon, AwardIcon, FileTextIcon, HistoryIcon
 } from 'lucide-react'
-import { format, formatDistanceToNow } from 'date-fns'
-import axios from 'axios'
+import { format, isToday, isYesterday, differenceInMinutes, differenceInHours } from 'date-fns'
 
 // Helper to return status-specific icon
 function getStatusIcon(eventType) {
@@ -21,6 +20,44 @@ function getStatusIcon(eventType) {
   if (type.includes('OFFER') || type.includes('ACCEPT')) return <AwardIcon size={14} className="text-emerald-400" />
   if (type.includes('REJECT') || type.includes('DECLINE') || type.includes('WITHDRAW')) return <AlertCircleIcon size={14} className="text-red-400" />
   return <HistoryIcon size={14} className="text-gray-400" />
+}
+
+// Custom relative time formatter matching specific requested strings
+function formatRelativeTime(dateStr) {
+  const date = new Date(dateStr)
+  const now = new Date()
+  
+  const diffMin = differenceInMinutes(now, date)
+  if (diffMin < 1) return 'Just now'
+  if (diffMin < 60) return `${diffMin} ${diffMin === 1 ? 'minute' : 'minutes'} ago`
+  
+  const diffHours = differenceInHours(now, date)
+  if (diffHours < 24 && isToday(date)) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`
+  
+  if (isYesterday(date)) return 'Yesterday'
+  
+  return format(date, 'MMM d, yyyy')
+}
+
+// Helper to group events by Date
+function groupEventsByDate(events) {
+  const groups = {}
+  events.forEach(evt => {
+    const date = new Date(evt.createdAt)
+    let groupKey = ''
+    if (isToday(date)) {
+      groupKey = 'Today'
+    } else if (isYesterday(date)) {
+      groupKey = 'Yesterday'
+    } else {
+      groupKey = format(date, 'MMMM d, yyyy')
+    }
+    if (!groups[groupKey]) {
+      groups[groupKey] = []
+    }
+    groups[groupKey].push(evt)
+  })
+  return Object.entries(groups)
 }
 
 export default function CareerTimelinePage() {
@@ -39,7 +76,7 @@ export default function CareerTimelinePage() {
   // 2. Fetch global timeline events using custom API mapping
   const { data: timeline = [], isLoading: timelineLoading } = useQuery({
     queryKey: ['global-timeline'],
-    queryFn: () => axios.get('/api/v1/timeline').then(r => r.data.data),
+    queryFn: opportunitiesApi.getGlobalTimeline,
   })
 
   if (oppsLoading || timelineLoading) {
@@ -75,6 +112,7 @@ export default function CareerTimelinePage() {
     })
 
   const paginatedEvents = filteredEvents.slice(0, pageSize)
+  const groupedEvents = groupEventsByDate(paginatedEvents)
 
   return (
     <motion.div
@@ -132,45 +170,59 @@ export default function CareerTimelinePage() {
             <div className="absolute top-10 bottom-10 left-9 w-0.5 bg-gradient-to-b from-brand-500/80 via-indigo-600/40 to-transparent pointer-events-none" />
 
             <div className="space-y-8">
-              {paginatedEvents.map((event) => (
-                <div key={event.id} className="flex gap-5 relative z-10 group">
-                  {/* Status Circle Icon */}
-                  <div className="w-8 h-8 rounded-full bg-darkSecondary border border-darkBorder flex items-center justify-center shrink-0 shadow-lg shadow-black/40 group-hover:border-brand-500/50 transition-colors">
-                    {getStatusIcon(event.eventType)}
+              {groupedEvents.map(([dateLabel, groupEvents]) => (
+                <div key={dateLabel} className="space-y-6">
+                  {/* Date Group Header */}
+                  <div className="pl-14 pt-2 pb-1 relative z-10">
+                    <span className="text-xs font-black text-brand-400 uppercase tracking-wider bg-darkCard/80 px-3 py-1.5 rounded-lg border border-darkBorder/60 shadow-md">
+                      {dateLabel}
+                    </span>
                   </div>
 
-                  {/* Log Content Card */}
-                  <div className="flex-1 min-w-0 bg-darkCard/55 border border-darkBorder/70 p-4.5 rounded-xl hover:border-brand-500/20 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-300">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div className="min-w-0">
-                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest block">
-                          {event.oppCompanyName}
-                        </span>
-                        <span className="text-xs font-black text-white block mt-0.5 truncate">
-                          {event.oppRoleName}
-                        </span>
+                  {groupEvents.map((event) => (
+                    <div key={event.id} className="flex gap-5 relative z-10 group">
+                      {/* Status Circle Icon */}
+                      <div className="w-8 h-8 rounded-full bg-darkSecondary border border-darkBorder flex items-center justify-center shrink-0 shadow-lg shadow-black/40 group-hover:border-brand-500/50 transition-colors">
+                        {getStatusIcon(event.eventType)}
                       </div>
-                      <div className="text-right shrink-0 flex items-center gap-1.5 text-[10px] text-brand-400 font-black uppercase">
-                        <ClockIcon size={11} />
-                        {formatDistanceToNow(new Date(event.createdAt), { addSuffix: true })}
+
+                      {/* Log Content Card */}
+                      <div className="flex-1 min-w-0 bg-darkCard/55 border border-darkBorder/70 p-4.5 rounded-xl hover:border-brand-500/20 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-300">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <div className="min-w-0">
+                            <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest block">
+                              {event.oppCompanyName}
+                            </span>
+                            <span className="text-xs font-black text-white block mt-0.5 truncate">
+                              {event.oppRoleName}
+                            </span>
+                          </div>
+                          <div 
+                            className="text-right shrink-0 flex items-center gap-1.5 text-[10px] text-brand-400 font-black uppercase cursor-help"
+                            title={format(new Date(event.createdAt), 'PPP p')}
+                          >
+                            <ClockIcon size={11} />
+                            {formatRelativeTime(event.createdAt)}
+                          </div>
+                        </div>
+
+                        <div className="border-t border-darkBorder/40 mt-3 pt-2">
+                          <p className="text-xs text-gray-300 leading-relaxed font-semibold">
+                            {event.description}
+                          </p>
+                        </div>
+
+                        <div className="mt-2.5 flex items-center justify-between">
+                          <span className="text-[9px] font-black text-gray-500 uppercase tracking-wider">
+                            Event: {event.eventType.replace(/_/g, ' ')}
+                          </span>
+                          <span className="text-[9px] text-gray-500 font-bold">
+                            {format(new Date(event.createdAt), 'PPP p')}
+                          </span>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="border-t border-darkBorder/40 mt-3 pt-2">
-                      <p className="text-xs text-gray-300 leading-relaxed font-semibold">
-                        {event.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-2.5 flex items-center justify-between">
-                      <span className="text-[9px] font-black text-gray-500 uppercase tracking-wider">
-                        Event: {event.eventType.replace(/_/g, ' ')}
-                      </span>
-                      <span className="text-[9px] text-gray-500 font-bold">
-                        {format(new Date(event.createdAt), 'PPP p')}
-                      </span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               ))}
             </div>

@@ -54,18 +54,37 @@ public class CalendarEventListener {
                 if (interviewDate != null) {
                     String platform = (String) event.getMetadata().get("platform");
                     String interviewer = (String) event.getMetadata().get("interviewerName");
-                    String desc = String.format("Interview for %s role at %s.%nPlatform: %s%nInterviewer: %s",
-                            opp.getRoleName(), opp.getCompanyName(),
-                            platform != null ? platform : "N/A",
-                            interviewer != null ? interviewer : "N/A");
+                    String roundType = (String) event.getMetadata().get("roundType");
+                    String outcome = (String) event.getMetadata().get("outcome");
+                    Integer duration = (Integer) event.getMetadata().get("durationMinutes");
+                    String notes = (String) event.getMetadata().get("notes");
+
+                    String title = opp.getCompanyName() + " - " + (roundType != null ? roundType : "General") + " Interview";
+
+                    StringBuilder descBuilder = new StringBuilder();
+                    descBuilder.append(String.format("Interview for %s role at %s.%n", opp.getRoleName(), opp.getCompanyName()));
+                    descBuilder.append(String.format("Round Type: %s%n", roundType != null ? roundType : "N/A"));
+                    descBuilder.append(String.format("Platform: %s%n", platform != null ? platform : "N/A"));
+                    if (interviewer != null && !interviewer.trim().isEmpty()) {
+                        descBuilder.append(String.format("Interviewer: %s%n", interviewer));
+                    }
+                    if (duration != null) {
+                        descBuilder.append(String.format("Duration: %d minutes%n", duration));
+                    }
+                    if (outcome != null && !outcome.trim().isEmpty()) {
+                        descBuilder.append(String.format("Outcome: %s%n", outcome));
+                    }
+                    if (notes != null && !notes.trim().isEmpty()) {
+                        descBuilder.append(String.format("%nPreparation Notes:%n%s", notes));
+                    }
 
                     calendarEventService.scheduleEvent(
                             opp.getId(),
                             event.getUserId(),
-                            opp.getCompanyName() + " Interview",
+                            title,
                             "INTERVIEW_DATE",
                             interviewDate,
-                            desc
+                            descBuilder.toString()
                     );
                 }
             }

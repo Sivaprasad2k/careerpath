@@ -22,6 +22,7 @@ export const opportunitiesApi = {
 
   // Timeline
   getTimeline: (id) => api.get(`/opportunities/${id}/timeline`).then(r => r.data.data),
+  getGlobalTimeline: () => api.get('/timeline').then(r => r.data.data),
 
   // Notes
   getNotes:   (id)       => api.get(`/opportunities/${id}/notes`).then(r => r.data.data),
