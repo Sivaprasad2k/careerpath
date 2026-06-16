@@ -25,7 +25,7 @@ spring:
     schemas: public
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${PORT:8080}
   error:
     include-message: never
     include-binding-errors: never
