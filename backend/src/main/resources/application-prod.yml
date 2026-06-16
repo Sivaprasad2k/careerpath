@@ -9,5 +9,5 @@ server:
 
 logging:
   level:
-    com.interviewflow: WARN
-    root: WARN
+    com.interviewflow: INFO
+    root: INFO
