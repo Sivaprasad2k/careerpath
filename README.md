@@ -4,37 +4,39 @@
 
 ---
 
-## Architecture
+## 🛠️ Tech Stack & Architecture
 
 | Layer | Technology |
 |---|---|
-| Backend | Spring Boot 3.3, Spring Security, JWT, Spring Data JPA, Hibernate |
-| Database | PostgreSQL 16, Flyway migrations |
-| Frontend | React 18, Vite, Tailwind CSS, React Query, Zustand |
-| Testing | JUnit 5, Testcontainers, MockMvc |
+| **Backend** | Spring Boot 3.3, Java 17, Spring Security, JWT, Spring Data JPA, Hibernate |
+| **Database** | PostgreSQL 16 (Neon), Flyway migrations |
+| **Frontend** | React 18, Vite, CSS, React Query (TanStack), Zustand |
+| **Testing** | JUnit 5, Testcontainers, MockMvc |
+| **Deployment** | Backend: Render (Dockerized JRE 21), Frontend: Vercel |
 
-**Pattern:** Modular Monolith with feature-based package isolation.
+**Architecture Pattern:** Modular Monolith with feature-based package isolation.
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 interviewflow/
 ├── backend/          Spring Boot application
 │   ├── src/main/java/com/interviewflow/
-│   │   ├── auth/           JWT auth, BCrypt, User entity
-│   │   ├── application/    Core workflow engine + state machine
-│   │   ├── interview/      Interview round management
-│   │   ├── task/           Task management + auto-creation
-│   │   ├── notification/   Event-driven in-app notifications
-│   │   ├── audit/          Immutable JSONB audit trail
-│   │   ├── config/         Security, JPA, OpenAPI config
-│   │   └── common/         Exceptions, response envelope, utils
-│   └── src/main/resources/db/migration/  6 Flyway migrations
-└── frontend/         React + Vite + Tailwind
+│   │   ├── auth/           JWT Auth, BCrypt, User entity
+│   │   ├── application/    Core workflow engine + state machine (Opportunities, Notes, Timeline)
+│   │   ├── calendar/       Calendar event tracking for interviews and deadlines
+│   │   ├── document/       Attachment uploads (Resumes, Cover letters)
+│   │   ├── reminder/       Event-driven follow-up alerts and task reminders
+│   │   ├── notification/   Event-driven in-app notification alerts
+│   │   ├── audit/          Immutable JSONB audit trail logs
+│   │   ├── config/         Security, JPA, OpenAPI configurations
+│   │   └── common/         Exceptions, response envelopes, utility handlers
+│   └── src/main/resources/db/migration/  5 Flyway migration scripts
+└── frontend/         React + Vite SPA
     └── src/
-        ├── features/       Auth, Applications, Interviews, Tasks, Notifications
+        ├── features/       Auth, Dashboard, Opportunities, Calendar, Tasks, Notifications, Timeline, Documents
         ├── components/     AppShell, UI primitives
         ├── api/            Axios instance + per-feature API modules
         └── store/          Zustand auth store
@@ -42,12 +44,12 @@ interviewflow/
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 - Docker & Docker Compose
-- Java 21 (for local backend dev)
-- Node 20 (for local frontend dev)
+- Java 17+ (for local backend development)
+- Node 18+ (for local frontend development)
 
 ### Run with Docker Compose
 
@@ -58,106 +60,71 @@ cp .env.example .env
 docker compose up --build
 ```
 
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:8080
-- Swagger UI: http://localhost:8080/swagger-ui.html
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:8080
+- **Swagger UI**: http://localhost:8080/swagger-ui.html
 
-### Run locally (development)
+---
 
-**Backend:**
-```bash
-cd backend
-# Start PostgreSQL
-docker compose up postgres -d
-# Run backend
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+## 🔄 Application Workflow
+
+Opportunities transition through a state machine that validates allowed status moves.
+
+```
+DRAFT ➔ APPLIED ➔ ASSESSMENT_RECEIVED ➔ ASSESSMENT_COMPLETED ➔ INTERVIEW_SCHEDULED ➔ INTERVIEW_COMPLETED ➔ OFFER_RECEIVED ➔ ACCEPTED (Terminal)
+                                                                                                        ➔ DECLINED (Terminal)
+                                                         ➔ REJECTED (Terminal - from any active state)
+                                                         ➔ WITHDRAWN (Terminal - from any non-terminal state)
 ```
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
+Every transition is a named, explicit HTTP endpoint. Invalid transitions return an HTTP `409 Conflict`.
+
+### Transition API Endpoints
+
+```
+POST /api/v1/opportunities                           Create (→ DRAFT)
+POST /api/v1/opportunities/{id}/apply                DRAFT → APPLIED
+POST /api/v1/opportunities/{id}/receive-assessment   APPLIED → ASSESSMENT_RECEIVED
+POST /api/v1/opportunities/{id}/complete-assessment  ASSESSMENT_RECEIVED → ASSESSMENT_COMPLETED
+POST /api/v1/opportunities/{id}/schedule-interview   ASSESSMENT_COMPLETED/APPLIED → INTERVIEW_SCHEDULED
+POST /api/v1/opportunities/{id}/complete-interview   INTERVIEW_SCHEDULED → INTERVIEW_COMPLETED
+POST /api/v1/opportunities/{id}/receive-offer        INTERVIEW_COMPLETED → OFFER_RECEIVED
+POST /api/v1/opportunities/{id}/accept               OFFER_RECEIVED → ACCEPTED
+POST /api/v1/opportunities/{id}/decline              OFFER_RECEIVED → DECLINED
+POST /api/v1/opportunities/{id}/reject               Any → REJECTED
+POST /api/v1/opportunities/{id}/withdraw              Any non-terminal → WITHDRAWN
 ```
 
 ---
 
-## Application Workflow
+## 🔒 Security & CORS
 
-```
-DRAFT → APPLIED → SCREENING → TECHNICAL_ROUND → HR_ROUND → OFFER_RECEIVED
-                                    ↓ (any stage)
-                                 REJECTED
-```
-
-Every transition is a named HTTP endpoint. The state machine validates all transitions.
-Invalid transitions return HTTP 409 Conflict.
-
-### Workflow API Endpoints
-
-```
-POST /api/v1/applications                           Create (→ DRAFT)
-POST /api/v1/applications/{id}/apply                DRAFT → APPLIED
-POST /api/v1/applications/{id}/move-to-screening    APPLIED → SCREENING
-POST /api/v1/applications/{id}/move-to-technical-round  SCREENING → TECHNICAL_ROUND
-POST /api/v1/applications/{id}/move-to-hr-round     TECHNICAL_ROUND → HR_ROUND
-POST /api/v1/applications/{id}/accept-offer         HR_ROUND → OFFER_RECEIVED
-POST /api/v1/applications/{id}/reject               Any → REJECTED
-```
+- **JWT Authentication** — Access token (15 mins) + refresh token (7 days) authentication flow.
+- **BCrypt** password hashing (strength 12).
+- **Ownership Validation** — Every service method validates that the requesting user owns the resource being updated.
+- **Row-level Security** — Query patterns check `findByIdAndUserId` to prevent horizontal privilege escalation.
+- **CORS Allowed Origins** — Configured globally for development (`http://localhost:[*]`) and Vercel production hosting (`https://*.vercel.app`) using origin patterns and supporting credentials headers.
 
 ---
 
-## Security
-
-- **JWT Authentication** — access token (15 min) + refresh token (7 days)
-- **BCrypt** password hashing (strength 12)
-- **Ownership validation** — every service method asserts the requesting user owns the resource
-- **Row-level security** — `findByIdAndUserId` pattern prevents horizontal privilege escalation
-- **No generic status PATCH** — only named workflow endpoints
-
----
-
-## Event Architecture
-
-Every workflow action publishes a Spring ApplicationEvent:
-
-| Event | Listeners |
-|---|---|
-| ApplicationCreatedEvent | AuditEventListener, NotificationEventListener |
-| ApplicationAppliedEvent | AuditEventListener, NotificationEventListener, TaskAutoCreationListener |
-| TechnicalRoundScheduledEvent | AuditEventListener, NotificationEventListener, TaskAutoCreationListener |
-| OfferReceivedEvent | AuditEventListener, NotificationEventListener |
-| ApplicationRejectedEvent | AuditEventListener, NotificationEventListener |
-
----
-
-## Running Tests
+## 🧪 Running Tests
 
 ```bash
 cd backend
 ./mvnw test
 ```
 
-Tests use Testcontainers — a real PostgreSQL instance is started automatically.
-No H2 or in-memory database is used.
+*Tests use Testcontainers to spin up a real PostgreSQL instance automatically during execution. No in-memory databases are used for integration tests.*
 
 ---
 
-## API Documentation
+## 🏁 Deployment Configuration
 
-Swagger UI available at `/swagger-ui.html` when the backend is running.
-All endpoints are documented with `@Operation` annotations.
-Click **Authorize** and paste your JWT access token to test protected routes.
+### 🚀 Backend (Render)
+- Configured using a multi-stage Docker build based on Alpine JRE 21.
+- Dynamically resolves listening port bindings via the `PORT` environment variable (`server.port=${PORT:8080}`).
+- Employs public GET `/healthz` endpoints to satisfy Render load-balancer startup scans.
 
----
-
-## Architecture Decision Records
-
-| ADR | Decision |
-|---|---|
-| ADR-001 | Modular Monolith — depth over infra complexity |
-| ADR-002 | Spring Events over Kafka — in-JVM, testable, migratable |
-| ADR-003 | Explicit workflow endpoints over generic PATCH |
-| ADR-004 | Feature-based packages — cohesion over layer folders |
-| ADR-005 | JSONB audit values — schema-agnostic diff capture |
-| ADR-006 | UUID primary keys — no sequential ID enumeration |
+### 🌐 Frontend (Vercel)
+- Configured with SPA rewrite rules in `frontend/vercel.json` to route all subpaths back to `index.html` for client-side React Router navigation.
+- Fetches the backend URL at build time using the Vercel dashboard environment key `VITE_API_BASE_URL`.
