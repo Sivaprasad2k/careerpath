@@ -95,11 +95,11 @@ export default function OpportunityListPage() {
             className="input pl-9"
           />
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center w-full sm:w-auto">
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="input text-xs font-bold w-40"
+            className="input text-xs font-bold w-full sm:w-40"
           >
             <option value="ALL">All Priorities</option>
             <option value="HIGH">High Priority</option>
@@ -123,44 +123,81 @@ export default function OpportunityListPage() {
           }
         />
       ) : (
-        <div className="card overflow-hidden border border-darkBorder bg-darkCard/30 shadow-2xl">
-          <table className="w-full text-sm text-left text-gray-300">
-            <thead>
-              <tr className="border-b border-darkBorder/60 bg-darkSecondary/40 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                <th className="px-5 py-4 font-black">Company</th>
-                <th className="px-5 py-4 font-black">Role</th>
-                <th className="px-5 py-4 font-black">Priority</th>
-                <th className="px-5 py-4 font-black">Status</th>
-                <th className="px-5 py-4 font-black text-right">Last Updated</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-darkBorder/40">
-              {filteredOpps.map((opp) => (
-                <tr
-                  key={opp.id}
-                  onClick={() => navigate('/opportunities/' + opp.id)}
-                  className="hover:bg-darkCard/60 cursor-pointer transition-colors group"
-                >
-                  <td className="px-5 py-3.5 font-extrabold text-white group-hover:text-brand-400 transition-colors">
-                    {opp.companyName}
-                  </td>
-                  <td className="px-5 py-3.5 text-gray-400 font-semibold">{opp.roleName}</td>
-                  <td className="px-5 py-3.5">
-                    <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
-                      opp.priority === 'HIGH' ? 'bg-red-950/20 text-red-400 border-red-900/30' : opp.priority === 'MEDIUM' ? 'bg-yellow-950/20 text-yellow-400 border-yellow-900/30' : 'bg-blue-950/20 text-blue-400 border-blue-900/30'
-                    }`}>
-                      {opp.priority}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3.5"><StatusBadge status={opp.currentStatus} /></td>
-                  <td className="px-5 py-3.5 text-gray-500 font-bold text-xs text-right">
-                    {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: true })}
-                  </td>
+        <>
+          {/* Table layout - Desktop only */}
+          <div className="hidden md:block card overflow-hidden border border-darkBorder bg-darkCard/30 shadow-2xl">
+            <table className="w-full text-sm text-left text-gray-300">
+              <thead>
+                <tr className="border-b border-darkBorder/60 bg-darkSecondary/40 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  <th className="px-5 py-4 font-black">Company</th>
+                  <th className="px-5 py-4 font-black">Role</th>
+                  <th className="px-5 py-4 font-black">Priority</th>
+                  <th className="px-5 py-4 font-black">Status</th>
+                  <th className="px-5 py-4 font-black text-right">Last Updated</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-darkBorder/40">
+                {filteredOpps.map((opp) => (
+                  <tr
+                    key={opp.id}
+                    onClick={() => navigate('/opportunities/' + opp.id)}
+                    className="hover:bg-darkCard/60 cursor-pointer transition-colors group"
+                  >
+                    <td className="px-5 py-3.5 font-extrabold text-white group-hover:text-brand-400 transition-colors">
+                      {opp.companyName}
+                    </td>
+                    <td className="px-5 py-3.5 text-gray-400 font-semibold">{opp.roleName}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
+                        opp.priority === 'HIGH' ? 'bg-red-950/20 text-red-400 border-red-900/30' : opp.priority === 'MEDIUM' ? 'bg-yellow-950/20 text-yellow-400 border-yellow-900/30' : 'bg-blue-950/20 text-blue-400 border-blue-900/30'
+                      }`}>
+                        {opp.priority}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5"><StatusBadge status={opp.currentStatus} /></td>
+                    <td className="px-5 py-3.5 text-gray-500 font-bold text-xs text-right">
+                      {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: true })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Card layout - Mobile only */}
+          <div className="grid grid-cols-1 gap-4 md:hidden">
+            {filteredOpps.map((opp) => (
+              <div
+                key={opp.id}
+                onClick={() => navigate('/opportunities/' + opp.id)}
+                className="card bg-darkCard border border-darkBorder p-4.5 flex flex-col gap-3.5 hover:border-brand-500/30 transition-all duration-200 active:bg-darkCard/80"
+              >
+                <div className="flex justify-between items-start gap-2">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-sm font-extrabold text-white truncate">
+                      {opp.companyName}
+                    </h4>
+                    <p className="text-xs text-gray-400 font-semibold truncate mt-0.5">
+                      {opp.roleName}
+                    </p>
+                  </div>
+                  <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shrink-0 ${
+                    opp.priority === 'HIGH' ? 'bg-red-950/20 text-red-400 border-red-900/30' : opp.priority === 'MEDIUM' ? 'bg-yellow-950/20 text-yellow-400 border-yellow-900/30' : 'bg-blue-950/20 text-blue-400 border-blue-900/30'
+                  }`}>
+                    {opp.priority}
+                  </span>
+                </div>
+                
+                <div className="flex justify-between items-center mt-1 border-t border-darkBorder/40 pt-2.5">
+                  <StatusBadge status={opp.currentStatus} />
+                  <span className="text-[10px] text-gray-500 font-bold uppercase">
+                    {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: false })} ago
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {/* ── Slide Drawer Panel Detail View ────────────────────────────── */}

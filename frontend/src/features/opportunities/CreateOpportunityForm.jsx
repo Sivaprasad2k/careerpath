@@ -85,7 +85,7 @@ export default function CreateOpportunityForm({ onSubmit, loading, onCancel }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-white">
       {/* Row 1: Company & Role */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="label">Company Name *</label>
           <input
@@ -107,7 +107,7 @@ export default function CreateOpportunityForm({ onSubmit, loading, onCancel }) {
       </div>
 
       {/* Row 2: Location & Source */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="label">Location</label>
           <input
@@ -129,7 +129,7 @@ export default function CreateOpportunityForm({ onSubmit, loading, onCancel }) {
       </div>
 
       {/* Row 3: Salary & Date */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="label">Estimated Salary</label>
           <input

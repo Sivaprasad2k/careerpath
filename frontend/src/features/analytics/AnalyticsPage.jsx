@@ -165,10 +165,10 @@ export default function AnalyticsPage() {
 
   // Conversion Funnel Data (Steps representing pipeline transition rates)
   const funnelStagesData = [
-    { name: 'Total Tracked', Count: totalCount, rate: 100, color: '#6366f1' },
-    { name: 'Assessments Invite', Count: assessment + interview + offer, rate: totalCount ? Math.round(((assessment + interview + offer) / totalCount) * 100) : 0, color: '#a855f7' },
-    { name: 'Interview Invites', Count: interview + offer, rate: totalCount ? Math.round(((interview + offer) / totalCount) * 100) : 0, color: '#ec4899' },
-    { name: 'Offers Secured', Count: offer, rate: totalCount ? Math.round((offer / totalCount) * 100) : 0, color: '#10b981' }
+    { name: 'Total Tracked', shortName: 'Tracked', Count: totalCount, rate: 100, color: '#6366f1' },
+    { name: 'Assessments Invite', shortName: 'Assessments', Count: assessment + interview + offer, rate: totalCount ? Math.round(((assessment + interview + offer) / totalCount) * 100) : 0, color: '#a855f7' },
+    { name: 'Interview Invites', shortName: 'Interviews', Count: interview + offer, rate: totalCount ? Math.round(((interview + offer) / totalCount) * 100) : 0, color: '#ec4899' },
+    { name: 'Offers Secured', shortName: 'Offers', Count: offer, rate: totalCount ? Math.round((offer / totalCount) * 100) : 0, color: '#10b981' }
   ]
 
   return (
@@ -359,7 +359,7 @@ export default function AnalyticsPage() {
               >
                 <CartesianGrid stroke="rgba(255,255,255,0.03)" horizontal={false} />
                 <XAxis type="number" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} />
-                <YAxis dataKey="name" type="category" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} width={100} />
+                <YAxis dataKey="shortName" type="category" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} width={65} />
                 <Tooltip content={<ChartTooltip />} />
                 <Bar dataKey="Count" name="Applications count" radius={[0, 4, 4, 0]}>
                   {funnelStagesData.map((entry, index) => (
@@ -371,9 +371,10 @@ export default function AnalyticsPage() {
           </div>
           <div className="mt-4 grid grid-cols-4 gap-2 text-center text-[10px] font-bold text-gray-500">
             {funnelStagesData.map((stage, i) => (
-              <div key={i} className="border-r border-darkBorder/30 last:border-0">
+              <div key={i} className="border-r border-darkBorder/30 last:border-0 px-1">
                 <p className="text-white font-black text-xs">{stage.rate}%</p>
-                <p className="truncate mt-0.5">{stage.name}</p>
+                <p className="mt-0.5 hidden sm:block truncate">{stage.name}</p>
+                <p className="mt-0.5 block sm:hidden truncate">{stage.shortName}</p>
               </div>
             ))}
           </div>

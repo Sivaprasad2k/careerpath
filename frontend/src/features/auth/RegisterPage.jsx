@@ -69,7 +69,7 @@ export default function RegisterPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="card w-full max-w-md p-8 bg-darkCard/80 backdrop-blur-xl border border-darkBorder/80 shadow-2xl relative z-10"
+        className="card w-full max-w-md p-6 sm:p-8 bg-darkCard/80 backdrop-blur-xl border border-darkBorder/80 shadow-2xl relative z-10"
       >
         <div className="text-center mb-8 flex flex-col items-center">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-500/20 mb-3">

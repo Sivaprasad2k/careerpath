@@ -140,11 +140,11 @@ export default function CareerTimelinePage() {
             className="input pl-9"
           />
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center w-full sm:w-auto">
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="input text-xs font-bold w-40"
+            className="input text-xs font-bold w-full sm:w-40"
           >
             <option value="ALL">All Events</option>
             <option value="APPLICATIONS">Applications</option>
@@ -167,13 +167,13 @@ export default function CareerTimelinePage() {
           {/* Visual Timeline Feed */}
           <div className="bg-darkCard/30 border border-darkBorder/60 rounded-2xl p-6 md:p-8 relative">
             {/* Timeline center line */}
-            <div className="absolute top-10 bottom-10 left-9 w-0.5 bg-gradient-to-b from-brand-500/80 via-indigo-600/40 to-transparent pointer-events-none" />
+            <div className="absolute top-10 bottom-10 left-[40px] md:left-[48px] w-0.5 bg-gradient-to-b from-brand-500/80 via-indigo-600/40 to-transparent pointer-events-none" />
 
             <div className="space-y-8">
               {groupedEvents.map(([dateLabel, groupEvents]) => (
                 <div key={dateLabel} className="space-y-6">
                   {/* Date Group Header */}
-                  <div className="pl-14 pt-2 pb-1 relative z-10">
+                  <div className="pl-[52px] md:pl-[64px] pt-2 pb-1 relative z-10">
                     <span className="text-xs font-black text-brand-400 uppercase tracking-wider bg-darkCard/80 px-3 py-1.5 rounded-lg border border-darkBorder/60 shadow-md">
                       {dateLabel}
                     </span>

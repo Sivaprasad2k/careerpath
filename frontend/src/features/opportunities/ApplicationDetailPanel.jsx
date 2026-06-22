@@ -417,7 +417,7 @@ export default function ApplicationDetailPanel({ id, onClose }) {
             </div>
 
             {/* Navigation Tabs */}
-            <div className="flex border-b border-darkBorder bg-darkSecondary px-4">
+            <div className="flex border-b border-darkBorder bg-darkSecondary px-4 overflow-x-auto scrollbar-none whitespace-nowrap">
               {[
                 { id: 'overview', label: 'Overview' },
                 { id: 'timeline', label: 'Timeline' },
@@ -428,7 +428,7 @@ export default function ApplicationDetailPanel({ id, onClose }) {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-3.5 text-xs font-bold tracking-wide transition-all border-b-2 uppercase ${
+                  className={`shrink-0 px-4 py-3.5 text-xs font-bold tracking-wide transition-all border-b-2 uppercase ${
                     activeTab === tab.id
                       ? 'border-brand-500 text-white'
                       : 'border-transparent text-gray-400 hover:text-white'

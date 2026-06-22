@@ -143,7 +143,7 @@ export default function TasksPrepPage() {
                       <button
                         type="button"
                         onClick={() => handleDeleteTask(t.id)}
-                        className="text-gray-500 hover:text-red-400 p-1.5 rounded-lg hover:bg-darkCard transition-opacity opacity-0 group-hover:opacity-100 ml-2"
+                        className="text-gray-500 hover:text-red-400 p-1.5 rounded-lg hover:bg-darkCard transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 ml-2 shrink-0"
                       >
                         <TrashIcon size={14} />
                       </button>

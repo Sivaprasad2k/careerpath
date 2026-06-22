@@ -79,11 +79,11 @@ export default function DocumentsPage() {
             className="input pl-9"
           />
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center w-full sm:w-auto">
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="input text-xs font-bold w-40"
+            className="input text-xs font-bold w-full sm:w-40"
           >
             <option value="ALL">All Types</option>
             <option value="RESUME">Resumes</option>

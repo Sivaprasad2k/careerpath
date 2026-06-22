@@ -45,6 +45,7 @@ export default function KanbanBoard({ opportunities }) {
   const [activeDragId, setActiveDragId] = useState(null)
   const [dragOverCol, setDragOverCol] = useState(null)
   const [selectedOppId, setSelectedOppId] = useState(null)
+  const [selectedColumnKey, setSelectedColumnKey] = useState('APPLIED')
 
   // Transition Modal states
   const [targetOpp, setTargetOpp] = useState(null)
@@ -172,94 +173,119 @@ export default function KanbanBoard({ opportunities }) {
 
 
   return (
-    <div className="flex gap-5 overflow-x-auto pb-6 select-none min-h-[65vh] items-start">
-      {COLUMNS.map(col => {
-        const colOpps = opportunities.filter(o => col.statuses.includes(o.currentStatus))
-        const isOver = dragOverCol === col.key
+    <div className="space-y-4 w-full">
+      {/* Mobile Column Tabs Selector */}
+      <div className="flex md:hidden gap-1.5 overflow-x-auto pb-3 mb-2 scrollbar-none">
+        {COLUMNS.map(col => {
+          const colOpps = opportunities.filter(o => col.statuses.includes(o.currentStatus))
+          const isActive = selectedColumnKey === col.key
+          return (
+            <button
+              key={col.key}
+              onClick={() => setSelectedColumnKey(col.key)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border shrink-0 ${
+                isActive 
+                  ? 'bg-brand-500 text-white border-brand-500 shadow-md shadow-brand-500/10' 
+                  : 'bg-darkSecondary text-gray-400 border-darkBorder hover:text-white'
+              }`}
+            >
+              {col.label} ({colOpps.length})
+            </button>
+          )
+        })}
+      </div>
 
-        return (
-          <div
-            key={col.key}
-            onDragOver={(e) => {
-              e.preventDefault()
-              if (dragOverCol !== col.key) setDragOverCol(col.key)
-            }}
-            onDragLeave={() => setDragOverCol(null)}
-            onDrop={(e) => handleDrop(e, col.key)}
-            className={`flex-1 min-w-[270px] max-w-[340px] rounded-xl p-4 transition-all duration-200 border ${
-              isOver
-                ? 'bg-brand-500/5 border-brand-500/30 shadow-lg shadow-brand-500/5'
-                : 'bg-darkSecondary/80 border-darkBorder/40'
-            }`}
-          >
-            {/* Column Header */}
-            <div className="flex justify-between items-center mb-4 px-1">
-              <span className="text-xs font-black text-gray-400 uppercase tracking-widest">{col.label}</span>
-              <span className="text-xs font-bold px-2 py-0.5 bg-darkCard text-gray-300 border border-darkBorder rounded-full shadow-inner">
-                {colOpps.length}
-              </span>
+      <div className="flex flex-col md:flex-row gap-5 md:overflow-x-auto pb-6 select-none min-h-[65vh] items-stretch md:items-start">
+        {COLUMNS.map(col => {
+          const colOpps = opportunities.filter(o => col.statuses.includes(o.currentStatus))
+          const isOver = dragOverCol === col.key
+
+          return (
+            <div
+              key={col.key}
+              onDragOver={(e) => {
+                e.preventDefault()
+                if (dragOverCol !== col.key) setDragOverCol(col.key)
+              }}
+              onDragLeave={() => setDragOverCol(null)}
+              onDrop={(e) => handleDrop(e, col.key)}
+              className={`w-full md:flex-1 md:min-w-[270px] md:max-w-[340px] rounded-xl p-4 transition-all duration-200 border ${
+                selectedColumnKey === col.key ? 'block' : 'hidden md:block'
+              } ${
+                isOver
+                  ? 'bg-brand-500/5 border-brand-500/30 shadow-lg shadow-brand-500/5'
+                  : 'bg-darkSecondary/80 border-darkBorder/40'
+              }`}
+            >
+              {/* Column Header */}
+              <div className="flex justify-between items-center mb-4 px-1">
+                <span className="text-xs font-black text-gray-400 uppercase tracking-widest">{col.label}</span>
+                <span className="text-xs font-bold px-2 py-0.5 bg-darkCard text-gray-300 border border-darkBorder rounded-full shadow-inner">
+                  {colOpps.length}
+                </span>
+              </div>
+
+              {/* Column Cards Container */}
+              <div className="space-y-3.5 max-h-[60vh] overflow-y-auto pr-1">
+                {colOpps.map(opp => {
+                  const health = getCardHealth(opp)
+                  return (
+                    <motion.div
+                      key={opp.id}
+                      layoutId={`card-${opp.id}`}
+                      whileHover={{ y: -3, scale: 1.01 }}
+                      draggable
+                      onDragStart={(e) => handleDragStart(e, opp.id)}
+                      onDragEnd={handleDragEnd}
+                      onClick={() => setSelectedOppId(opp.id)}
+                      className="card bg-darkCard p-4 border border-darkBorder/80 cursor-grab active:cursor-grabbing hover:border-brand-500/30 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-200 group relative overflow-hidden"
+                    >
+                      {/* Glowing Accent Border on Hover */}
+                      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      
+                      {/* Row 1: Company (small uppercase) & priority dot */}
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-[10px] font-bold text-gray-500 tracking-wider uppercase truncate">
+                          {opp.companyName}
+                        </span>
+                        <span className={`w-2 h-2 rounded-full shrink-0 ${
+                          opp.priority === 'HIGH' ? 'bg-red-500 shadow-md shadow-red-500/20' : opp.priority === 'MEDIUM' ? 'bg-amber-500 shadow-md shadow-amber-500/20' : 'bg-blue-400 shadow-md shadow-blue-400/20'
+                        }`} title={`${opp.priority} Priority`} />
+                      </div>
+                      
+                      {/* Row 2: Role name (larger bold white) */}
+                      <h4 className="text-sm font-extrabold text-white group-hover:text-brand-400 transition-colors mt-1 truncate">
+                        {opp.roleName}
+                      </h4>
+
+                      {/* Horizontal Divider */}
+                      <div className="border-t border-darkBorder/40 my-3" />
+
+                      {/* Row 3: Updated time (left) & health score pct (right) */}
+                      <div className="flex items-center justify-between text-[10px] text-gray-500 font-bold mt-2">
+                        <span className="flex items-center gap-1 truncate">
+                          <ClockIcon size={11} className="text-gray-500 shrink-0" />
+                          Updated {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: false })} ago
+                        </span>
+                        <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border shrink-0 ${health.color}`}>
+                          {health.score}%
+                        </span>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+                {colOpps.length === 0 && (
+                  <div className="text-center py-8 border border-dashed border-darkBorder/30 rounded-xl bg-darkSecondary/30 hover:bg-darkSecondary/50 transition-colors flex items-center justify-center">
+                    <span className="text-[10px] font-black text-gray-600 tracking-widest uppercase">
+                      DROP HERE
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-
-            {/* Column Cards Container */}
-            <div className="space-y-3.5 max-h-[60vh] overflow-y-auto pr-1">
-              {colOpps.map(opp => {
-                const health = getCardHealth(opp)
-                return (
-                  <motion.div
-                    key={opp.id}
-                    layoutId={`card-${opp.id}`}
-                    whileHover={{ y: -3, scale: 1.01 }}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, opp.id)}
-                    onDragEnd={handleDragEnd}
-                    onClick={() => setSelectedOppId(opp.id)}
-                    className="card bg-darkCard p-4 border border-darkBorder/80 cursor-grab active:cursor-grabbing hover:border-brand-500/30 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-200 group relative overflow-hidden"
-                  >
-                    {/* Glowing Accent Border on Hover */}
-                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    
-                    {/* Row 1: Company (small uppercase) & priority dot */}
-                    <div className="flex justify-between items-center gap-2">
-                      <span className="text-[10px] font-bold text-gray-500 tracking-wider uppercase truncate">
-                        {opp.companyName}
-                      </span>
-                      <span className={`w-2 h-2 rounded-full shrink-0 ${
-                        opp.priority === 'HIGH' ? 'bg-red-500 shadow-md shadow-red-500/20' : opp.priority === 'MEDIUM' ? 'bg-amber-500 shadow-md shadow-amber-500/20' : 'bg-blue-400 shadow-md shadow-blue-400/20'
-                      }`} title={`${opp.priority} Priority`} />
-                    </div>
-                    
-                    {/* Row 2: Role name (larger bold white) */}
-                    <h4 className="text-sm font-extrabold text-white group-hover:text-brand-400 transition-colors mt-1 truncate">
-                      {opp.roleName}
-                    </h4>
-
-                    {/* Horizontal Divider */}
-                    <div className="border-t border-darkBorder/40 my-3" />
-
-                    {/* Row 3: Updated time (left) & health score pct (right) */}
-                    <div className="flex items-center justify-between text-[10px] text-gray-500 font-bold mt-2">
-                      <span className="flex items-center gap-1 truncate">
-                        <ClockIcon size={11} className="text-gray-500 shrink-0" />
-                        Updated {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: false })} ago
-                      </span>
-                      <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border shrink-0 ${health.color}`}>
-                        {health.score}%
-                      </span>
-                    </div>
-                  </motion.div>
-                )
-              })}
-              {colOpps.length === 0 && (
-                <div className="text-center py-8 border border-dashed border-darkBorder/30 rounded-xl bg-darkSecondary/30 hover:bg-darkSecondary/50 transition-colors flex items-center justify-center">
-                  <span className="text-[10px] font-black text-gray-600 tracking-widest uppercase">
-                    DROP HERE
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
 
       {/* ── Sliding Detail Panel Experience ───────────────────────────── */}
       <AnimatePresence>

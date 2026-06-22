@@ -35,7 +35,7 @@ export default function Modal({ open, onClose, title, children }) {
             className="relative bg-darkSecondary border border-darkBorder rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto z-10 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-darkBorder bg-darkCard/40 shrink-0">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-darkBorder bg-darkCard/40 shrink-0">
               <h2 className="text-xs font-black text-white uppercase tracking-widest">{title}</h2>
               <button
                 onClick={onClose}
@@ -47,7 +47,7 @@ export default function Modal({ open, onClose, title, children }) {
             </div>
 
             {/* Content Body */}
-            <div className="px-6 py-5 overflow-y-auto">
+            <div className="px-4 sm:px-6 py-5 overflow-y-auto">
               {children}
             </div>
           </motion.div>
