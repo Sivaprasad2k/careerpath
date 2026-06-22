@@ -4,7 +4,7 @@
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+##  Tech Stack & Architecture
 
 | Layer | Technology |
 |---|---|
@@ -18,7 +18,7 @@
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 interviewflow/
@@ -44,7 +44,7 @@ interviewflow/
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Docker & Docker Compose
@@ -66,7 +66,7 @@ docker compose up --build
 
 ---
 
-## 🔄 Application Workflow
+##  Application Workflow
 
 Opportunities transition through a state machine that validates allowed status moves.
 
@@ -97,7 +97,7 @@ POST /api/v1/opportunities/{id}/withdraw              Any non-terminal → WITHD
 
 ---
 
-## 🔒 Security & CORS
+##  Security & CORS
 
 - **JWT Authentication** — Access token (15 mins) + refresh token (7 days) authentication flow.
 - **BCrypt** password hashing (strength 12).
@@ -107,7 +107,7 @@ POST /api/v1/opportunities/{id}/withdraw              Any non-terminal → WITHD
 
 ---
 
-## 🧪 Running Tests
+##  Running Tests
 
 ```bash
 cd backend
@@ -118,13 +118,13 @@ cd backend
 
 ---
 
-## 🏁 Deployment Configuration
+## Deployment Configuration
 
-### 🚀 Backend (Render)
+### Backend (Render)
 - Configured using a multi-stage Docker build based on Alpine JRE 21.
 - Dynamically resolves listening port bindings via the `PORT` environment variable (`server.port=${PORT:8080}`).
 - Employs public GET `/healthz` endpoints to satisfy Render load-balancer startup scans.
 
-### 🌐 Frontend (Vercel)
+### Frontend (Vercel)
 - Configured with SPA rewrite rules in `frontend/vercel.json` to route all subpaths back to `index.html` for client-side React Router navigation.
 - Fetches the backend URL at build time using the Vercel dashboard environment key `VITE_API_BASE_URL`.
