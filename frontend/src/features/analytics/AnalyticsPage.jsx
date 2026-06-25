@@ -146,7 +146,7 @@ export default function AnalyticsPage() {
 
   // Pie Chart Data: Status Distribution (Doughnut with innerRadius)
   const statusPieData = [
-    { name: 'Applied', value: applied + opps.filter(o => o.currentStatus === 'DRAFT').length, color: '#6366f1' },
+    { name: 'Applied', value: applied + opps.filter(o => o.currentStatus === 'DRAFT').length, color: '#5e6ad2' },
     { name: 'Assessment', value: assessment, color: '#a855f7' },
     { name: 'Interview', value: interview, color: '#ec4899' },
     { name: 'Offer', value: offer, color: '#10b981' },
@@ -165,7 +165,7 @@ export default function AnalyticsPage() {
 
   // Conversion Funnel Data (Steps representing pipeline transition rates)
   const funnelStagesData = [
-    { name: 'Total Tracked', shortName: 'Tracked', Count: totalCount, rate: 100, color: '#6366f1' },
+    { name: 'Total Tracked', shortName: 'Tracked', Count: totalCount, rate: 100, color: '#5e6ad2' },
     { name: 'Assessments Invite', shortName: 'Assessments', Count: assessment + interview + offer, rate: totalCount ? Math.round(((assessment + interview + offer) / totalCount) * 100) : 0, color: '#a855f7' },
     { name: 'Interview Invites', shortName: 'Interviews', Count: interview + offer, rate: totalCount ? Math.round(((interview + offer) / totalCount) * 100) : 0, color: '#ec4899' },
     { name: 'Offers Secured', shortName: 'Offers', Count: offer, rate: totalCount ? Math.round((offer / totalCount) * 100) : 0, color: '#10b981' }
@@ -255,10 +255,10 @@ export default function AnalyticsPage() {
                   type="monotone"
                   dataKey="Cumulative"
                   name="Cumulative Growth"
-                  stroke="#6366f1"
+                  stroke="#5e6ad2"
                   strokeWidth={3}
-                  dot={{ r: 4, stroke: '#12172A', strokeWidth: 1.5, fill: '#6366f1' }}
-                  activeDot={{ r: 6, stroke: '#6366f1', strokeWidth: 2, fill: '#fff' }}
+                  dot={{ r: 4, stroke: '#121218', strokeWidth: 1.5, fill: '#5e6ad2' }}
+                  activeDot={{ r: 6, stroke: '#5e6ad2', strokeWidth: 2, fill: '#fff' }}
                 />
               </LineChart>
             </ResponsiveContainer>

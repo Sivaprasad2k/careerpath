@@ -8,16 +8,16 @@ export default {
         display: ['Outfit', 'sans-serif'],
       },
       colors: {
-        darkBg: '#0B1020',
-        darkSecondary: '#12172A',
-        darkCard: '#161C31',
-        darkBorder: 'rgba(255,255,255,0.08)',
+        darkBg: '#08080a',
+        darkSecondary: '#0d0d12',
+        darkCard: '#121218',
+        darkBorder: 'rgba(255,255,255,0.065)',
         brand: {
-          50:  '#eef2ff',
-          100: '#e0e7ff',
-          500: '#6d5dfc',
-          600: '#7c3aed',
-          700: '#8b5cf6',
+          50:  '#f3f4fc',
+          100: '#e5e6f9',
+          500: '#5e6ad2',
+          600: '#4d58be',
+          700: '#3e47a6',
         }
       }
     }
