@@ -229,7 +229,7 @@ export default function AnalyticsPage() {
       {/* Row 1: LineChart & PieChart */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sleek Line Chart */}
-        <div className="lg:col-span-2 card bg-darkCard/40 border border-darkBorder/80 p-6 flex flex-col justify-between">
+        <div className="lg:col-span-2 card bg-darkCard/80 border border-darkBorder p-6 flex flex-col justify-between rounded-2xl shadow-xl shadow-black/25">
           <div className="mb-4">
             <h3 className="font-extrabold text-white text-sm">Application Activity Trends</h3>
             <p className="text-xs text-gray-500 font-semibold mt-0.5">Chronological progress of application submissions over time</p>
@@ -237,34 +237,28 @@ export default function AnalyticsPage() {
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={lineChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="lineGlow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2}/>
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid stroke="rgba(255,255,255,0.03)" vertical={false} />
-                <XAxis dataKey="date" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} />
-                <YAxis stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} allowDecimals={false} />
+                <CartesianGrid stroke="rgba(255,255,255,0.02)" vertical={false} />
+                <XAxis dataKey="date" stroke="rgba(255,255,255,0.15)" fontSize={10} tickLine={false} />
+                <YAxis stroke="rgba(255,255,255,0.15)" fontSize={10} tickLine={false} allowDecimals={false} />
                 <Tooltip content={<ChartTooltip />} />
-                <Legend iconSize={10} wrapperStyle={{ fontSize: 10, color: '#94A3B8', paddingTop: 10 }} />
+                <Legend iconSize={10} wrapperStyle={{ fontSize: 9, color: '#94A3B8', paddingTop: 10, textTransform: 'uppercase', fontWeight: 'bold', letterSpacing: '0.05em' }} />
                 <Line
                   type="monotone"
                   dataKey="Submissions"
                   name="Daily Submissions"
                   stroke="#ec4899"
-                  strokeWidth={2.5}
+                  strokeWidth={3}
                   dot={{ r: 4, stroke: '#12172A', strokeWidth: 1.5, fill: '#ec4899' }}
-                  activeDot={{ r: 6 }}
+                  activeDot={{ r: 6, stroke: '#ec4899', strokeWidth: 2, fill: '#fff' }}
                 />
                 <Line
                   type="monotone"
                   dataKey="Cumulative"
                   name="Cumulative Growth"
                   stroke="#6366f1"
-                  strokeWidth={2.5}
+                  strokeWidth={3}
                   dot={{ r: 4, stroke: '#12172A', strokeWidth: 1.5, fill: '#6366f1' }}
-                  activeDot={{ r: 6 }}
+                  activeDot={{ r: 6, stroke: '#6366f1', strokeWidth: 2, fill: '#fff' }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -272,7 +266,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Status Distribution Pie Chart */}
-        <div className="card bg-darkCard/40 border border-darkBorder/80 p-6 flex flex-col justify-between">
+        <div className="card bg-darkCard/80 border border-darkBorder p-6 flex flex-col justify-between rounded-2xl shadow-xl shadow-black/25">
           <div className="mb-4">
             <h3 className="font-extrabold text-white text-sm">Status Distribution</h3>
             <p className="text-xs text-gray-500 font-semibold mt-0.5">Doughnut breakdown of active/inactive states</p>
@@ -290,7 +284,7 @@ export default function AnalyticsPage() {
                     cy="50%"
                     innerRadius={65}
                     outerRadius={85}
-                    paddingAngle={3}
+                    paddingAngle={4}
                     dataKey="value"
                   >
                     {statusPieData.map((entry, index) => (
@@ -302,15 +296,15 @@ export default function AnalyticsPage() {
             )}
             <div className="absolute flex flex-col items-center justify-center">
               <span className="text-xs font-black text-white">Pipeline</span>
-              <span className="text-[9px] text-gray-400 font-bold uppercase">Stages</span>
+              <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Stages</span>
             </div>
           </div>
-          <div className="mt-2 space-y-1.5 max-h-24 overflow-y-auto">
+          <div className="mt-2 space-y-1.5 max-h-24 overflow-y-auto pr-1">
             {statusPieData.map((d, i) => (
               <div key={i} className="flex justify-between items-center text-[10px] font-bold text-gray-400">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-                  <span>{d.name}</span>
+                  <span className="uppercase tracking-wider text-[9px] text-gray-500 font-black">{d.name}</span>
                 </div>
                 <span className="text-white font-black">{d.value}</span>
               </div>
@@ -322,7 +316,7 @@ export default function AnalyticsPage() {
       {/* Row 2: BarChart Priority & Conversion Funnel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Priority Tracks BarChart */}
-        <div className="card bg-darkCard/40 border border-darkBorder/80 p-6 flex flex-col justify-between">
+        <div className="card bg-darkCard/80 border border-darkBorder p-6 flex flex-col justify-between rounded-2xl shadow-xl shadow-black/25">
           <div className="mb-4">
             <h3 className="font-extrabold text-white text-sm">Priority Focus Tracks</h3>
             <p className="text-xs text-gray-500 font-semibold mt-0.5">Volume breakdown matching priority weightings</p>
@@ -330,9 +324,9 @@ export default function AnalyticsPage() {
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={priorityBarData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid stroke="rgba(255,255,255,0.03)" vertical={false} />
-                <XAxis dataKey="name" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} />
-                <YAxis stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} allowDecimals={false} />
+                <CartesianGrid stroke="rgba(255,255,255,0.02)" vertical={false} />
+                <XAxis dataKey="name" stroke="rgba(255,255,255,0.15)" fontSize={10} tickLine={false} />
+                <YAxis stroke="rgba(255,255,255,0.15)" fontSize={10} tickLine={false} allowDecimals={false} />
                 <Tooltip content={<ChartTooltip />} />
                 <Bar dataKey="Count" radius={[4, 4, 0, 0]}>
                   {priorityBarData.map((entry, index) => (
@@ -345,7 +339,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Horizontal Funnel Bar Chart */}
-        <div className="lg:col-span-2 card bg-darkCard/40 border border-darkBorder/80 p-6 flex flex-col justify-between">
+        <div className="lg:col-span-2 card bg-darkCard/80 border border-darkBorder p-6 flex flex-col justify-between rounded-2xl shadow-xl shadow-black/25">
           <div className="mb-4">
             <h3 className="font-extrabold text-white text-sm">Conversion Funnel</h3>
             <p className="text-xs text-gray-500 font-semibold mt-0.5">Progression flow from application to final offer</p>
@@ -357,9 +351,9 @@ export default function AnalyticsPage() {
                 data={funnelStagesData}
                 margin={{ top: 10, right: 20, left: 10, bottom: 0 }}
               >
-                <CartesianGrid stroke="rgba(255,255,255,0.03)" horizontal={false} />
-                <XAxis type="number" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} />
-                <YAxis dataKey="shortName" type="category" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} width={65} />
+                <CartesianGrid stroke="rgba(255,255,255,0.02)" horizontal={false} />
+                <XAxis type="number" stroke="rgba(255,255,255,0.15)" fontSize={10} tickLine={false} />
+                <YAxis dataKey="shortName" type="category" stroke="rgba(255,255,255,0.15)" fontSize={10} tickLine={false} width={65} />
                 <Tooltip content={<ChartTooltip />} />
                 <Bar dataKey="Count" name="Applications count" radius={[0, 4, 4, 0]}>
                   {funnelStagesData.map((entry, index) => (
@@ -373,8 +367,8 @@ export default function AnalyticsPage() {
             {funnelStagesData.map((stage, i) => (
               <div key={i} className="border-r border-darkBorder/30 last:border-0 px-1">
                 <p className="text-white font-black text-xs">{stage.rate}%</p>
-                <p className="mt-0.5 hidden sm:block truncate">{stage.name}</p>
-                <p className="mt-0.5 block sm:hidden truncate">{stage.shortName}</p>
+                <p className="mt-0.5 hidden sm:block truncate uppercase tracking-wider text-[8px] text-gray-500 font-bold">{stage.name}</p>
+                <p className="mt-0.5 block sm:hidden truncate uppercase tracking-wider text-[8px] text-gray-500 font-bold">{stage.shortName}</p>
               </div>
             ))}
           </div>

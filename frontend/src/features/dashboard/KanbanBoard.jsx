@@ -209,24 +209,24 @@ export default function KanbanBoard({ opportunities }) {
               }}
               onDragLeave={() => setDragOverCol(null)}
               onDrop={(e) => handleDrop(e, col.key)}
-              className={`w-full md:flex-1 md:min-w-[270px] md:max-w-[340px] rounded-xl p-4 transition-all duration-200 border ${
+              className={`w-full md:flex-1 md:min-w-[270px] md:max-w-[340px] rounded-2xl p-4.5 transition-all duration-300 border ${
                 selectedColumnKey === col.key ? 'block' : 'hidden md:block'
               } ${
                 isOver
                   ? 'bg-brand-500/5 border-brand-500/30 shadow-lg shadow-brand-500/5'
-                  : 'bg-darkSecondary/80 border-darkBorder/40'
+                  : 'bg-darkSecondary/50 border-darkBorder/60'
               }`}
             >
               {/* Column Header */}
-              <div className="flex justify-between items-center mb-4 px-1">
+              <div className="flex justify-between items-center mb-4.5 px-1">
                 <span className="text-xs font-black text-gray-400 uppercase tracking-widest">{col.label}</span>
-                <span className="text-xs font-bold px-2 py-0.5 bg-darkCard text-gray-300 border border-darkBorder rounded-full shadow-inner">
+                <span className="text-[10px] font-black px-2 py-0.5 bg-darkCard text-gray-300 border border-darkBorder rounded-lg shadow-inner">
                   {colOpps.length}
                 </span>
               </div>
 
               {/* Column Cards Container */}
-              <div className="space-y-3.5 max-h-[60vh] overflow-y-auto pr-1">
+              <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
                 {colOpps.map(opp => {
                   const health = getCardHealth(opp)
                   return (
@@ -238,34 +238,34 @@ export default function KanbanBoard({ opportunities }) {
                       onDragStart={(e) => handleDragStart(e, opp.id)}
                       onDragEnd={handleDragEnd}
                       onClick={() => setSelectedOppId(opp.id)}
-                      className="card bg-darkCard p-4 border border-darkBorder/80 cursor-grab active:cursor-grabbing hover:border-brand-500/30 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-200 group relative overflow-hidden"
+                      className="card bg-darkCard/95 p-4.5 border border-darkBorder/80 cursor-grab active:cursor-grabbing hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 group relative overflow-hidden"
                     >
                       {/* Glowing Accent Border on Hover */}
                       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       
                       {/* Row 1: Company (small uppercase) & priority dot */}
                       <div className="flex justify-between items-center gap-2">
-                        <span className="text-[10px] font-bold text-gray-500 tracking-wider uppercase truncate">
+                        <span className="text-[10px] font-extrabold text-gray-500 tracking-wider uppercase truncate">
                           {opp.companyName}
                         </span>
                         <span className={`w-2 h-2 rounded-full shrink-0 ${
-                          opp.priority === 'HIGH' ? 'bg-red-500 shadow-md shadow-red-500/20' : opp.priority === 'MEDIUM' ? 'bg-amber-500 shadow-md shadow-amber-500/20' : 'bg-blue-400 shadow-md shadow-blue-400/20'
+                          opp.priority === 'HIGH' ? 'bg-red-500 shadow-md shadow-red-500/30 animate-pulse' : opp.priority === 'MEDIUM' ? 'bg-amber-500 shadow-md shadow-amber-500/30' : 'bg-blue-400 shadow-md shadow-blue-400/30'
                         }`} title={`${opp.priority} Priority`} />
                       </div>
                       
                       {/* Row 2: Role name (larger bold white) */}
-                      <h4 className="text-sm font-extrabold text-white group-hover:text-brand-400 transition-colors mt-1 truncate">
+                      <h4 className="text-sm font-extrabold text-white group-hover:text-brand-400 transition-colors mt-1.5 truncate">
                         {opp.roleName}
                       </h4>
 
                       {/* Horizontal Divider */}
-                      <div className="border-t border-darkBorder/40 my-3" />
+                      <div className="border-t border-darkBorder/40 my-3.5" />
 
                       {/* Row 3: Updated time (left) & health score pct (right) */}
                       <div className="flex items-center justify-between text-[10px] text-gray-500 font-bold mt-2">
-                        <span className="flex items-center gap-1 truncate">
+                        <span className="flex items-center gap-1.5 truncate">
                           <ClockIcon size={11} className="text-gray-500 shrink-0" />
-                          Updated {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: false })} ago
+                          {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: false })} ago
                         </span>
                         <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border shrink-0 ${health.color}`}>
                           {health.score}%
@@ -275,7 +275,7 @@ export default function KanbanBoard({ opportunities }) {
                   )
                 })}
                 {colOpps.length === 0 && (
-                  <div className="text-center py-8 border border-dashed border-darkBorder/30 rounded-xl bg-darkSecondary/30 hover:bg-darkSecondary/50 transition-colors flex items-center justify-center">
+                  <div className="text-center py-10 border border-dashed border-darkBorder/30 rounded-xl bg-darkSecondary/20 hover:bg-darkSecondary/35 hover:border-darkBorder/50 transition-all flex items-center justify-center">
                     <span className="text-[10px] font-black text-gray-600 tracking-widest uppercase">
                       DROP HERE
                     </span>

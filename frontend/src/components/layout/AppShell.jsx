@@ -34,7 +34,7 @@ export default function AppShell() {
       {/* Mobile Sidebar Backdrop Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-30 bg-black/70 backdrop-blur-sm md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -49,7 +49,7 @@ export default function AppShell() {
         <div className="px-6 py-5 border-b border-darkBorder flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-500 to-brand-700 flex items-center justify-center shadow-md shadow-brand-500/10">
-              <CompassIcon size={18} className="text-white" />
+              <CompassIcon size={18} className="text-white animate-spin-slow" />
             </div>
             <span className="text-lg font-black text-white tracking-tight">
               CareerPath
@@ -72,10 +72,10 @@ export default function AppShell() {
               to={to}
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>
-                `relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all group ${
+                `relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all group ${
                   isActive
                     ? 'text-white'
-                    : 'text-gray-400 hover:bg-darkCard hover:text-white'
+                    : 'text-gray-400 hover:bg-darkCard/60 hover:text-white'
                 }`
               }
             >
@@ -84,14 +84,14 @@ export default function AppShell() {
                   {isActive && (
                     <motion.div
                       layoutId="active-indicator"
-                      className="absolute inset-0 bg-gradient-to-r from-brand-600/10 to-brand-700/5 border-l-2 border-brand-500 rounded-lg shadow-inner"
+                      className="absolute inset-0 bg-brand-500/5 border-l-2 border-brand-500 rounded-xl"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                  <Icon size={16} className={`relative z-10 ${isActive ? 'text-brand-500' : 'text-gray-400 group-hover:text-white transition-colors'}`} />
-                  <span className="relative z-10">{label}</span>
+                  <Icon size={15} className={`relative z-10 ${isActive ? 'text-brand-500' : 'text-gray-400 group-hover:text-white transition-colors'}`} />
+                  <span className="relative z-10 group-hover:translate-x-0.5 transition-transform duration-200">{label}</span>
                   {isActive && (
-                    <span className="absolute right-3 w-1.5 h-1.5 rounded-full bg-brand-500 shadow-lg shadow-brand-500/40 relative z-10" />
+                    <span className="absolute right-3.5 w-1.5 h-1.5 rounded-full bg-brand-500 shadow-lg shadow-brand-500/40 relative z-10" />
                   )}
                 </>
               )}
@@ -101,17 +101,17 @@ export default function AppShell() {
 
         {/* Sidebar Footer User Info */}
         <div className="p-4 border-t border-darkBorder bg-darkSecondary/50">
-          <div className="flex items-center gap-3 px-2 py-1.5 rounded-lg hover:bg-darkCard/50 transition-colors">
-            <div className="w-9 h-9 rounded-full bg-brand-700 flex items-center justify-center font-bold text-white text-sm shadow-md">
+          <div className="flex items-center gap-3 px-2 py-1.5 rounded-xl border border-transparent hover:border-darkBorder hover:bg-darkCard/50 transition-all duration-300">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-500 to-brand-700 flex items-center justify-center font-black text-white text-sm shadow-md shadow-brand-500/10 shrink-0">
               {user?.name?.slice(0, 2).toUpperCase() || 'CP'}
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-xs font-bold text-white truncate">{user?.name}</p>
-              <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
+              <p className="text-[10px] text-gray-500 truncate font-semibold">{user?.email}</p>
             </div>
             <button
               onClick={handleLogout}
-              className="text-gray-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-darkCard transition-colors"
+              className="text-gray-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-darkCard transition-colors shrink-0"
               title="Sign Out"
             >
               <LogOutIcon size={14} />
@@ -123,7 +123,7 @@ export default function AppShell() {
       {/* ── Main Area ───────────────────────────────────────────────────── */}
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Top Header Bar */}
-        <header className="h-16 bg-darkSecondary border-b border-darkBorder flex items-center justify-between px-4 md:px-8 relative z-20">
+        <header className="h-16 bg-darkSecondary/80 backdrop-blur-md border-b border-darkBorder flex items-center justify-between px-4 md:px-8 relative z-20">
           <div className="flex items-center gap-3">
             {/* Hamburger button */}
             <button
@@ -142,7 +142,7 @@ export default function AppShell() {
               <input
                 type="text"
                 placeholder="Search applications..."
-                className="w-full bg-darkBg/80 border border-darkBorder rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all"
+                className="w-full bg-darkBg/60 border border-darkBorder rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-gray-500/80 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/10 transition-all duration-200"
               />
             </div>
           </div>

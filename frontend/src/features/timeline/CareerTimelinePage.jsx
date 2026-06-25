@@ -182,23 +182,23 @@ export default function CareerTimelinePage() {
                   {groupEvents.map((event) => (
                     <div key={event.id} className="flex gap-5 relative z-10 group">
                       {/* Status Circle Icon */}
-                      <div className="w-8 h-8 rounded-full bg-darkSecondary border border-darkBorder flex items-center justify-center shrink-0 shadow-lg shadow-black/40 group-hover:border-brand-500/50 transition-colors">
+                      <div className="w-9 h-9 rounded-full bg-darkSecondary border border-darkBorder/80 flex items-center justify-center shrink-0 shadow-lg shadow-black/40 group-hover:border-brand-500/50 transition-all duration-300">
                         {getStatusIcon(event.eventType)}
                       </div>
 
                       {/* Log Content Card */}
-                      <div className="flex-1 min-w-0 bg-darkCard/55 border border-darkBorder/70 p-4.5 rounded-xl hover:border-brand-500/20 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-300">
+                      <div className="flex-1 min-w-0 bg-darkCard/80 border border-darkBorder/60 p-5 rounded-2xl hover:border-brand-500/25 hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                           <div className="min-w-0">
-                            <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest block">
+                            <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-widest block">
                               {event.oppCompanyName}
                             </span>
-                            <span className="text-xs font-black text-white block mt-0.5 truncate">
+                            <span className="text-sm font-extrabold text-white block mt-0.5 truncate">
                               {event.oppRoleName}
                             </span>
                           </div>
                           <div 
-                            className="text-right shrink-0 flex items-center gap-1.5 text-[10px] text-brand-400 font-black uppercase cursor-help"
+                            className="text-right shrink-0 flex items-center gap-1.5 text-[10px] text-brand-400 font-extrabold uppercase cursor-help"
                             title={format(new Date(event.createdAt), 'PPP p')}
                           >
                             <ClockIcon size={11} />
@@ -206,17 +206,17 @@ export default function CareerTimelinePage() {
                           </div>
                         </div>
 
-                        <div className="border-t border-darkBorder/40 mt-3 pt-2">
+                        <div className="border-t border-darkBorder/40 mt-3.5 pt-3">
                           <p className="text-xs text-gray-300 leading-relaxed font-semibold">
                             {event.description}
                           </p>
                         </div>
 
-                        <div className="mt-2.5 flex items-center justify-between">
-                          <span className="text-[9px] font-black text-gray-500 uppercase tracking-wider">
+                        <div className="mt-3 flex items-center justify-between text-[9px] font-extrabold uppercase tracking-wider text-gray-500">
+                          <span>
                             Event: {event.eventType.replace(/_/g, ' ')}
                           </span>
-                          <span className="text-[9px] text-gray-500 font-bold">
+                          <span className="font-semibold">
                             {format(new Date(event.createdAt), 'PPP p')}
                           </span>
                         </div>

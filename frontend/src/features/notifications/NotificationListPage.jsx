@@ -57,16 +57,16 @@ export default function NotificationListPage() {
         <EmptyState icon={BellIcon} title="No notifications"
           description="Notifications will appear here as your applications progress." />
       ) : (
-        <div className="card divide-y divide-darkBorder/40 bg-darkCard border border-darkBorder overflow-hidden shadow-2xl">
+        <div className="card divide-y divide-darkBorder/40 bg-darkCard/80 border border-darkBorder overflow-hidden shadow-xl shadow-black/25 rounded-2xl">
           {notifications.map((n) => (
-            <div key={n.id} className={`px-6 py-4 transition-colors relative ${n.read ? 'bg-darkCard/40' : 'bg-brand-500/5'}`}>
+            <div key={n.id} className={`px-6 py-4.5 transition-colors relative ${n.read ? 'bg-darkCard/40' : 'bg-brand-500/5 hover:bg-brand-500/10'}`}>
               {!n.read && (
-                <div className="absolute top-0 bottom-0 left-0 w-1 bg-brand-500"></div>
+                <div className="absolute top-0 bottom-0 left-0 w-[3px] bg-brand-500"></div>
               )}
               <div className="flex items-start justify-between gap-4">
                 <p className="text-sm font-extrabold text-white">{n.title}</p>
                 {!n.read && (
-                  <span className="shrink-0 w-2.5 h-2.5 rounded-full bg-brand-500 shadow-md shadow-brand-500/50 mt-1" />
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-brand-500 shadow-md shadow-brand-500/40 mt-1.5 animate-pulse" />
                 )}
               </div>
               <p className="text-xs text-gray-400 font-semibold mt-1 leading-relaxed">{n.message}</p>

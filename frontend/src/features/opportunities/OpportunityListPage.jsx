@@ -125,15 +125,15 @@ export default function OpportunityListPage() {
       ) : (
         <>
           {/* Table layout - Desktop only */}
-          <div className="hidden md:block card overflow-hidden border border-darkBorder bg-darkCard/30 shadow-2xl">
+          <div className="hidden md:block card overflow-hidden border border-darkBorder bg-darkCard/40 shadow-xl shadow-black/25 rounded-2xl">
             <table className="w-full text-sm text-left text-gray-300">
               <thead>
                 <tr className="border-b border-darkBorder/60 bg-darkSecondary/40 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                  <th className="px-5 py-4 font-black">Company</th>
-                  <th className="px-5 py-4 font-black">Role</th>
-                  <th className="px-5 py-4 font-black">Priority</th>
-                  <th className="px-5 py-4 font-black">Status</th>
-                  <th className="px-5 py-4 font-black text-right">Last Updated</th>
+                  <th className="px-6 py-4 font-black">Company</th>
+                  <th className="px-6 py-4 font-black">Role</th>
+                  <th className="px-6 py-4 font-black">Priority</th>
+                  <th className="px-6 py-4 font-black">Status</th>
+                  <th className="px-6 py-4 font-black text-right">Last Updated</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-darkBorder/40">
@@ -143,19 +143,19 @@ export default function OpportunityListPage() {
                     onClick={() => navigate('/opportunities/' + opp.id)}
                     className="hover:bg-darkCard/60 cursor-pointer transition-colors group"
                   >
-                    <td className="px-5 py-3.5 font-extrabold text-white group-hover:text-brand-400 transition-colors">
+                    <td className="px-6 py-4 font-extrabold text-white group-hover:text-brand-400 transition-colors">
                       {opp.companyName}
                     </td>
-                    <td className="px-5 py-3.5 text-gray-400 font-semibold">{opp.roleName}</td>
-                    <td className="px-5 py-3.5">
-                      <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
-                        opp.priority === 'HIGH' ? 'bg-red-950/20 text-red-400 border-red-900/30' : opp.priority === 'MEDIUM' ? 'bg-yellow-950/20 text-yellow-400 border-yellow-900/30' : 'bg-blue-950/20 text-blue-400 border-blue-900/30'
+                    <td className="px-6 py-4 text-gray-400 font-semibold">{opp.roleName}</td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center rounded-full font-extrabold uppercase tracking-wider text-[9px] px-2.5 py-0.5 border ${
+                        opp.priority === 'HIGH' ? 'bg-red-950/40 text-red-400 border-red-900/40' : opp.priority === 'MEDIUM' ? 'bg-amber-950/40 text-amber-400 border-amber-900/40' : 'bg-blue-950/40 text-blue-400 border-blue-900/40'
                       }`}>
                         {opp.priority}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5"><StatusBadge status={opp.currentStatus} /></td>
-                    <td className="px-5 py-3.5 text-gray-500 font-bold text-xs text-right">
+                    <td className="px-6 py-4"><StatusBadge status={opp.currentStatus} /></td>
+                    <td className="px-6 py-4 text-gray-500 font-bold text-xs text-right">
                       {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: true })}
                     </td>
                   </tr>
@@ -170,25 +170,25 @@ export default function OpportunityListPage() {
               <div
                 key={opp.id}
                 onClick={() => navigate('/opportunities/' + opp.id)}
-                className="card bg-darkCard border border-darkBorder p-4.5 flex flex-col gap-3.5 hover:border-brand-500/30 transition-all duration-200 active:bg-darkCard/80"
+                className="card bg-darkCard/90 border border-darkBorder p-5 flex flex-col gap-4 hover:border-brand-500/30 transition-all duration-300 active:bg-darkCard/80 hover:shadow-lg hover:shadow-brand-500/5 group"
               >
                 <div className="flex justify-between items-start gap-2">
                   <div className="min-w-0 flex-1">
-                    <h4 className="text-sm font-extrabold text-white truncate">
+                    <h4 className="text-sm font-extrabold text-white truncate group-hover:text-brand-400 transition-colors">
                       {opp.companyName}
                     </h4>
                     <p className="text-xs text-gray-400 font-semibold truncate mt-0.5">
                       {opp.roleName}
                     </p>
                   </div>
-                  <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shrink-0 ${
-                    opp.priority === 'HIGH' ? 'bg-red-950/20 text-red-400 border-red-900/30' : opp.priority === 'MEDIUM' ? 'bg-yellow-950/20 text-yellow-400 border-yellow-900/30' : 'bg-blue-950/20 text-blue-400 border-blue-900/30'
+                  <span className={`inline-flex items-center rounded-full font-extrabold uppercase tracking-wider text-[9px] px-2.5 py-0.5 border shrink-0 ${
+                    opp.priority === 'HIGH' ? 'bg-red-950/40 text-red-400 border-red-900/40' : opp.priority === 'MEDIUM' ? 'bg-amber-950/40 text-amber-400 border-amber-900/40' : 'bg-blue-950/40 text-blue-400 border-blue-900/40'
                   }`}>
                     {opp.priority}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center mt-1 border-t border-darkBorder/40 pt-2.5">
+                <div className="flex justify-between items-center mt-1 border-t border-darkBorder/40 pt-3">
                   <StatusBadge status={opp.currentStatus} />
                   <span className="text-[10px] text-gray-500 font-bold uppercase">
                     {formatDistanceToNow(new Date(opp.updatedAt), { addSuffix: false })} ago

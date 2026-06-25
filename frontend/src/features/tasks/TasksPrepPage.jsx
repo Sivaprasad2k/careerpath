@@ -109,7 +109,7 @@ export default function TasksPrepPage() {
               Active Checklists
             </h2>
 
-            <div className="space-y-2.5 max-h-[55vh] overflow-y-auto pr-1">
+            <div className="space-y-3 max-h-[55vh] overflow-y-auto pr-1">
               <AnimatePresence initial={false}>
                 {tasks.length === 0 ? (
                   <p className="text-xs text-gray-500 text-center py-8">All tasks completed! Nice work.</p>
@@ -120,17 +120,17 @@ export default function TasksPrepPage() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="flex items-center justify-between p-3.5 bg-darkSecondary/60 border border-darkBorder rounded-xl hover:border-brand-500/20 transition-all duration-200 group"
+                      className="flex items-center justify-between p-4 bg-darkSecondary/40 border border-darkBorder/60 rounded-2xl hover:border-brand-500/20 hover:bg-darkSecondary/65 hover:shadow-md hover:shadow-brand-500/5 transition-all duration-300 group"
                     >
-                      <label className="flex items-center gap-3 cursor-pointer select-none min-w-0 flex-1">
+                      <label className="flex items-center gap-3.5 cursor-pointer select-none min-w-0 flex-1">
                         <input
                           type="checkbox"
                           checked={t.done}
                           onChange={() => handleToggleTask(t.id)}
-                          className="w-4.5 h-4.5 rounded border-darkBorder text-brand-600 focus:ring-brand-500 bg-darkBg"
+                          className="w-5 h-5 rounded-lg border-darkBorder text-brand-500 focus:ring-brand-500/20 bg-darkSecondary/80 cursor-pointer transition-colors"
                         />
                         <div className="min-w-0 flex-1">
-                          <span className={`text-xs font-semibold block truncate ${t.done ? 'line-through text-gray-500' : 'text-gray-200'}`}>
+                          <span className={`text-xs font-bold block truncate ${t.done ? 'line-through text-gray-500' : 'text-gray-200'}`}>
                             {t.text}
                           </span>
                           {t.dueDate && (
@@ -157,32 +157,32 @@ export default function TasksPrepPage() {
 
         {/* Prep Guidelines Vault */}
         <div className="space-y-4">
-          <h2 className="text-xs font-black text-gray-500 uppercase tracking-widest flex items-center gap-1.5">
+          <h2 className="text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center gap-1.5">
             <BookOpenIcon size={12} />
             Prep Resources
           </h2>
 
           {/* STAR framework card */}
-          <div className="card bg-darkCard/50 border border-darkBorder/80 p-5 space-y-3">
+          <div className="card bg-darkCard/60 border border-darkBorder p-5 rounded-2xl space-y-3.5 hover:border-emerald-500/20 transition-all duration-300">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/10">STAR Method</span>
+              <span className="text-[9px] uppercase font-black tracking-wider px-2 py-0.5 rounded bg-emerald-500/5 text-emerald-400 border border-emerald-500/10">STAR Method</span>
             </div>
             <h4 className="font-extrabold text-white text-sm">Behavioral Interview Structure</h4>
             <p className="text-xs text-gray-400 leading-relaxed">
               Answer behavioral questions with high impact using this structure:
             </p>
             <ul className="space-y-1.5 text-xs text-gray-400 font-semibold pl-1">
-              <li className="flex gap-2"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <strong>S:</strong> Situation (Context)</li>
-              <li className="flex gap-2"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <strong>T:</strong> Task (Responsibility)</li>
-              <li className="flex gap-2"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <strong>A:</strong> Action (Your contributions)</li>
-              <li className="flex gap-2"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <strong>R:</strong> Result (Quantifiable outcome)</li>
+              <li className="flex gap-2.5"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <span><strong>S:</strong> Situation (Context)</span></li>
+              <li className="flex gap-2.5"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <span><strong>T:</strong> Task (Responsibility)</span></li>
+              <li className="flex gap-2.5"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <span><strong>A:</strong> Action (Your contributions)</span></li>
+              <li className="flex gap-2.5"><CheckCircle2Icon size={12} className="text-brand-500 shrink-0 mt-0.5" /> <span><strong>R:</strong> Result (Quantifiable outcome)</span></li>
             </ul>
           </div>
 
           {/* System Design card */}
-          <div className="card bg-darkCard/50 border border-darkBorder/80 p-5 space-y-3">
+          <div className="card bg-darkCard/60 border border-darkBorder p-5 rounded-2xl space-y-3.5 hover:border-violet-500/20 transition-all duration-300">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-violet-500/10 text-violet-400 border border-violet-500/10">Architecture</span>
+              <span className="text-[9px] uppercase font-black tracking-wider px-2 py-0.5 rounded bg-violet-500/5 text-violet-400 border border-violet-500/10">Architecture</span>
             </div>
             <h4 className="font-extrabold text-white text-sm">System Design Cheatsheet</h4>
             <p className="text-xs text-gray-400 leading-relaxed">
@@ -190,7 +190,7 @@ export default function TasksPrepPage() {
             </p>
             <div className="flex flex-wrap gap-1.5">
               {['Scalability', 'Load Balancers', 'Caching', 'Database Sharding', 'Microservices', 'CDN'].map(tag => (
-                <span key={tag} className="text-[9px] font-bold px-2 py-0.5 rounded border border-darkBorder bg-darkSecondary text-gray-400">
+                <span key={tag} className="text-[9px] font-black px-2.5 py-1 rounded-lg border border-darkBorder bg-darkBg/60 text-gray-400 hover:text-white transition-colors cursor-default">
                   {tag}
                 </span>
               ))}

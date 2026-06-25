@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+        display: ['Outfit', 'sans-serif'],
+      },
       colors: {
         darkBg: '#0B1020',
         darkSecondary: '#12172A',

@@ -14,16 +14,16 @@ import Modal from '../../components/ui/Modal'
 import InterviewForm from './InterviewForm'
 
 const TRANSITIONS_CONFIG = {
-  APPLIED: { label: 'Mark as Applied', type: 'APPLIED', style: 'btn-primary bg-indigo-600 hover:from-indigo-500' },
-  ASSESSMENT_RECEIVED: { label: 'Mark Assessment Received', type: 'ASSESSMENT', style: 'btn-primary bg-purple-600' },
-  ASSESSMENT_COMPLETED: { label: 'Mark Assessment Completed', type: 'ASSESSMENT_COMPLETED', style: 'btn-primary bg-purple-600' },
-  INTERVIEW_SCHEDULED: { label: 'Schedule Interview', type: 'INTERVIEW', style: 'btn-primary bg-violet-600' },
-  INTERVIEW_COMPLETED: { label: 'Mark Interview Completed', type: 'INTERVIEW_COMPLETED', style: 'btn-primary bg-violet-600' },
-  OFFER_RECEIVED: { label: 'Receive Job Offer', type: 'OFFER', style: 'btn-primary bg-green-600' },
-  ACCEPTED: { label: 'Accept Offer 🥳', type: 'ACCEPTED', style: 'btn-primary from-emerald-500 to-green-600' },
-  REJECTED: { label: 'Mark Rejected', type: 'REJECTED', style: 'btn-secondary text-red-400 border-red-900/30' },
-  DECLINED: { label: 'Decline Offer', type: 'DECLINED', style: 'btn-secondary text-gray-400' },
-  WITHDRAWN: { label: 'Withdraw Application', type: 'WITHDRAWN', style: 'btn-secondary text-gray-500' }
+  APPLIED: { label: 'Mark as Applied', type: 'APPLIED', style: 'btn-primary from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600' },
+  ASSESSMENT_RECEIVED: { label: 'Mark Assessment Received', type: 'ASSESSMENT', style: 'btn-primary from-fuchsia-600 to-fuchsia-700 hover:from-fuchsia-500 hover:to-fuchsia-600' },
+  ASSESSMENT_COMPLETED: { label: 'Mark Assessment Completed', type: 'ASSESSMENT_COMPLETED', style: 'btn-primary from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600' },
+  INTERVIEW_SCHEDULED: { label: 'Schedule Interview', type: 'INTERVIEW', style: 'btn-primary from-violet-600 to-violet-700 hover:from-violet-500 hover:to-violet-600' },
+  INTERVIEW_COMPLETED: { label: 'Mark Interview Completed', type: 'INTERVIEW_COMPLETED', style: 'btn-primary from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600' },
+  OFFER_RECEIVED: { label: 'Receive Job Offer', type: 'OFFER', style: 'btn-primary from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600' },
+  ACCEPTED: { label: 'Accept Offer 🥳', type: 'ACCEPTED', style: 'btn-primary from-green-500 to-emerald-600' },
+  REJECTED: { label: 'Mark Rejected', type: 'REJECTED', style: 'btn-secondary text-red-400 border-red-900/30 hover:bg-red-950/20' },
+  DECLINED: { label: 'Decline Offer', type: 'DECLINED', style: 'btn-secondary text-gray-400 hover:bg-slate-950/30' },
+  WITHDRAWN: { label: 'Withdraw Application', type: 'WITHDRAWN', style: 'btn-secondary text-gray-500 hover:bg-neutral-950/30' }
 }
 
 function calculateCareerHealth(opp, updatedAt) {

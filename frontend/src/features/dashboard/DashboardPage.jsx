@@ -125,41 +125,41 @@ export default function DashboardPage() {
         </div>
 
         {/* Nested Horizontal Metric Counters Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-8">
           {/* Active Applications */}
-          <div className="bg-darkBg/60 border border-darkBorder/80 p-4 rounded-xl flex items-center gap-4 hover:border-brand-500/30 transition-all duration-300">
-            <div className="p-3 bg-brand-500/10 text-brand-400 rounded-lg shrink-0">
+          <div className="bg-darkBg/40 border border-darkBorder p-5 rounded-2xl flex items-center gap-4 hover:border-brand-500/30 hover:bg-darkBg/60 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-300 group">
+            <div className="p-3 bg-brand-500/5 text-brand-400 rounded-xl border border-brand-500/10 shadow-inner group-hover:scale-105 transition-transform duration-200 shrink-0">
               <BriefcaseIcon size={18} />
             </div>
             <div className="min-w-0">
-              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest block">Active Applications</span>
-              <div className="text-xl font-black text-white mt-0.5">
+              <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-widest block">Active Applications</span>
+              <div className="text-2xl font-black text-white mt-0.5">
                 <AnimatedCounter value={activeApplications} />
               </div>
             </div>
           </div>
 
           {/* Upcoming Interviews */}
-          <div className="bg-darkBg/60 border border-darkBorder/80 p-4 rounded-xl flex items-center gap-4 hover:border-brand-500/30 transition-all duration-300">
-            <div className="p-3 bg-violet-500/10 text-violet-400 rounded-lg shrink-0">
+          <div className="bg-darkBg/40 border border-darkBorder p-5 rounded-2xl flex items-center gap-4 hover:border-violet-500/30 hover:bg-darkBg/60 hover:shadow-lg hover:shadow-violet-500/5 transition-all duration-300 group">
+            <div className="p-3 bg-violet-500/5 text-violet-400 rounded-xl border border-violet-500/10 shadow-inner group-hover:scale-105 transition-transform duration-200 shrink-0">
               <CalendarIcon size={18} />
             </div>
             <div className="min-w-0">
-              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest block">Upcoming Interviews</span>
-              <div className="text-xl font-black text-white mt-0.5">
+              <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-widest block">Upcoming Interviews</span>
+              <div className="text-2xl font-black text-white mt-0.5">
                 <AnimatedCounter value={upcomingInterviews} />
               </div>
             </div>
           </div>
 
           {/* Offers Awaiting Decision */}
-          <div className="bg-darkBg/60 border border-darkBorder/80 p-4 rounded-xl flex items-center gap-4 hover:border-brand-500/30 transition-all duration-300">
-            <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg shrink-0">
+          <div className="bg-darkBg/40 border border-darkBorder p-5 rounded-2xl flex items-center gap-4 hover:border-emerald-500/30 hover:bg-darkBg/60 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300 group">
+            <div className="p-3 bg-emerald-500/5 text-emerald-400 rounded-xl border border-emerald-500/10 shadow-inner group-hover:scale-105 transition-transform duration-200 shrink-0">
               <AwardIcon size={18} />
             </div>
             <div className="min-w-0">
-              <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest block">Offers Awaiting Decision</span>
-              <div className="text-xl font-black text-white mt-0.5">
+              <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-widest block">Offers Secured</span>
+              <div className="text-2xl font-black text-white mt-0.5">
                 <AnimatedCounter value={offersAwaiting} />
               </div>
             </div>

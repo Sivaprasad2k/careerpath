@@ -8,6 +8,10 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
@@ -17,41 +21,44 @@
     background: #0B1020;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-brand-500 via-brand-600 to-brand-700
-           text-white text-sm font-semibold hover:opacity-95 shadow-md shadow-brand-500/10 active:scale-95 transition-all
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 via-brand-600 to-brand-700
+           text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-brand-500/10 hover:shadow-brand-500/20
+           hover:-translate-y-[1px] active:scale-[0.98] transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
   }
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-darkSecondary text-gray-300
-           border border-darkBorder text-sm font-semibold hover:bg-darkCard hover:text-white active:scale-95 transition-all;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-darkSecondary text-gray-300
+           border border-darkBorder text-xs font-bold uppercase tracking-wider hover:bg-darkCard hover:text-white
+           hover:border-white/10 active:scale-[0.98] transition-all duration-200 disabled:opacity-50;
   }
   .btn-danger {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-950/40 text-red-400 border border-red-900/50
-           text-sm font-semibold hover:bg-red-900/30 hover:text-red-300 transition-colors;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-red-950/20 text-red-400
+           border border-red-900/30 text-xs font-bold uppercase tracking-wider hover:bg-red-900/25
+           hover:text-red-300 active:scale-[0.98] transition-all duration-200;
   }
   .input {
-    @apply w-full px-3 py-2 bg-darkSecondary border border-darkBorder rounded-lg text-sm text-white
-           focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent transition-all
-           placeholder:text-gray-500;
+    @apply w-full px-4 py-2.5 bg-darkSecondary/60 border border-darkBorder rounded-xl text-sm text-white
+           focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all duration-200
+           placeholder:text-gray-500/70;
   }
   .card {
-    @apply bg-darkCard rounded-xl border border-darkBorder shadow-xl shadow-black/10;
+    @apply bg-darkCard/80 rounded-2xl border border-darkBorder/80 shadow-xl shadow-black/20 backdrop-blur-md;
   }
   .label {
-    @apply block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5;
+    @apply block text-[10px] font-extrabold text-gray-400 uppercase tracking-widest mb-1.5;
   }
   .error-msg {
-    @apply text-xs text-red-400 mt-1;
+    @apply text-xs text-red-400 mt-1.5 font-semibold;
   }
 }
 

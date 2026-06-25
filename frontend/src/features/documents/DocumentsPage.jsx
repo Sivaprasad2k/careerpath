@@ -106,27 +106,27 @@ export default function DocumentsPage() {
           {filteredDocs.map(doc => (
             <div
               key={doc.id}
-              className="card bg-darkCard/50 border border-darkBorder/80 p-4 hover:border-brand-500/30 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+              className="card bg-darkCard/80 border border-darkBorder/60 p-5 hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/5 hover:-translate-y-[1px] transition-all duration-300 flex flex-col justify-between group rounded-2xl"
             >
-              <div className="flex items-start gap-3.5">
-                <div className="p-3 bg-brand-500/10 text-brand-400 rounded-xl">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-brand-500/5 text-brand-400 border border-brand-500/10 shadow-inner rounded-xl group-hover:scale-105 transition-transform duration-200 shrink-0">
                   <FileTextIcon size={18} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="font-extrabold text-white text-xs truncate" title={doc.fileName}>{doc.fileName}</h4>
-                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-0.5">{doc.fileType}</p>
-                  <div className="mt-2.5 flex items-center gap-1 text-[10px] text-gray-400 font-semibold">
-                    <span className="truncate">For: <strong>{doc.opportunity.companyName}</strong></span>
+                  <h4 className="font-extrabold text-white text-sm truncate" title={doc.fileName}>{doc.fileName}</h4>
+                  <p className="text-[9px] text-gray-500 font-black uppercase tracking-wider mt-0.5">{doc.fileType.replace(/_/g, ' ')}</p>
+                  <div className="mt-2 flex items-center gap-1 text-[10px] text-gray-400 font-semibold">
+                    <span className="truncate">For: <strong className="text-white">{doc.opportunity.companyName}</strong></span>
                   </div>
                 </div>
               </div>
 
-              <div className="border-t border-darkBorder/40 mt-4 pt-3 flex justify-between items-center">
-                <span className="text-[9px] text-gray-500 font-bold uppercase">Linked Application</span>
+              <div className="border-t border-darkBorder/40 mt-4.5 pt-3.5 flex justify-between items-center">
+                <span className="text-[9px] text-gray-500 font-black uppercase tracking-wider">Linked Application</span>
                 <a
                   href={opportunitiesApi.downloadDocumentUrl(doc.id)}
                   download
-                  className="btn-secondary text-[10px] py-1.5 px-3 flex items-center gap-1 shadow-md"
+                  className="btn-secondary text-[9px] py-1.5 px-3 flex items-center gap-1.5 shadow-md"
                 >
                   <DownloadIcon size={11} /> Download
                 </a>
