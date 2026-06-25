@@ -209,7 +209,7 @@ export default function KanbanBoard({ opportunities }) {
               }}
               onDragLeave={() => setDragOverCol(null)}
               onDrop={(e) => handleDrop(e, col.key)}
-              className={`w-full md:flex-1 md:min-w-[270px] md:max-w-[340px] rounded-2xl p-4.5 transition-all duration-300 border ${
+              className={`w-full md:flex-1 md:min-w-[270px] md:max-w-[340px] rounded-2xl p-5 transition-all duration-300 border ${
                 selectedColumnKey === col.key ? 'block' : 'hidden md:block'
               } ${
                 isOver
@@ -218,7 +218,7 @@ export default function KanbanBoard({ opportunities }) {
               }`}
             >
               {/* Column Header */}
-              <div className="flex justify-between items-center mb-4.5 px-1">
+              <div className="flex justify-between items-center mb-4 px-1">
                 <span className="text-xs font-black text-gray-400 uppercase tracking-widest">{col.label}</span>
                 <span className="text-[10px] font-black px-2 py-0.5 bg-darkCard text-gray-300 border border-darkBorder rounded-lg shadow-inner">
                   {colOpps.length}
@@ -238,7 +238,7 @@ export default function KanbanBoard({ opportunities }) {
                       onDragStart={(e) => handleDragStart(e, opp.id)}
                       onDragEnd={handleDragEnd}
                       onClick={() => setSelectedOppId(opp.id)}
-                      className="card bg-darkCard/95 p-4.5 border border-darkBorder/80 cursor-grab active:cursor-grabbing hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 group relative overflow-hidden"
+                      className="card bg-darkCard/95 p-5 border border-darkBorder/80 cursor-grab active:cursor-grabbing hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 group relative overflow-hidden"
                     >
                       {/* Glowing Accent Border on Hover */}
                       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>

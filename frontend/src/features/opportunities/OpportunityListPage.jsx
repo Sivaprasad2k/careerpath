@@ -71,7 +71,7 @@ export default function OpportunityListPage() {
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-darkBorder/40 pb-6">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight uppercase tracking-wider text-xs font-black text-gray-400">Applications List</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Applications List</h1>
           <p className="text-xs text-gray-500 font-bold mt-1">Currently tracking {opportunities.length} applications</p>
         </div>
         <div>

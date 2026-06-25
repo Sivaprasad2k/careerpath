@@ -61,7 +61,7 @@ export default function DocumentsPage() {
       className="space-y-6 max-w-7xl mx-auto"
     >
       <div className="border-b border-darkBorder/40 pb-6">
-        <h1 className="text-2xl font-black text-white tracking-tight uppercase tracking-wider text-xs font-black text-gray-400">Global Documents Vault</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Global Documents Vault</h1>
         <p className="text-xs text-gray-500 font-bold mt-1">Review and manage all resumes, cover letters, and portfolios attached to your applications</p>
       </div>
 
@@ -121,7 +121,7 @@ export default function DocumentsPage() {
                 </div>
               </div>
 
-              <div className="border-t border-darkBorder/40 mt-4.5 pt-3.5 flex justify-between items-center">
+              <div className="border-t border-darkBorder/40 mt-4 pt-4 flex justify-between items-center">
                 <span className="text-[9px] text-gray-500 font-black uppercase tracking-wider">Linked Application</span>
                 <a
                   href={opportunitiesApi.downloadDocumentUrl(doc.id)}

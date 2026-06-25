@@ -32,7 +32,7 @@ export default function CalendarPage() {
       className="space-y-6 max-w-7xl mx-auto"
     >
       <div className="border-b border-darkBorder/40 pb-6">
-        <h1 className="text-2xl font-black text-white tracking-tight uppercase tracking-wider text-xs font-black text-gray-400">Calendar Schedule</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Calendar Schedule</h1>
         <p className="text-xs text-gray-500 font-bold mt-1">Keep track of your scheduled interviews, deadlines, and follow-ups</p>
       </div>
 

@@ -37,7 +37,7 @@ export default function NotificationListPage() {
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-darkBorder/40 pb-6">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight uppercase tracking-wider text-xs font-black text-gray-400">Notifications</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Notifications</h1>
           <p className="text-xs text-gray-500 font-bold mt-1">
             {unread.length > 0 ? `${unread.length} unread updates` : 'All caught up'}
           </p>
@@ -59,7 +59,7 @@ export default function NotificationListPage() {
       ) : (
         <div className="card divide-y divide-darkBorder/40 bg-darkCard/80 border border-darkBorder overflow-hidden shadow-xl shadow-black/25 rounded-2xl">
           {notifications.map((n) => (
-            <div key={n.id} className={`px-6 py-4.5 transition-colors relative ${n.read ? 'bg-darkCard/40' : 'bg-brand-500/5 hover:bg-brand-500/10'}`}>
+            <div key={n.id} className={`px-6 py-5 transition-colors relative ${n.read ? 'bg-darkCard/40' : 'bg-brand-500/5 hover:bg-brand-500/10'}`}>
               {!n.read && (
                 <div className="absolute top-0 bottom-0 left-0 w-[3px] bg-brand-500"></div>
               )}

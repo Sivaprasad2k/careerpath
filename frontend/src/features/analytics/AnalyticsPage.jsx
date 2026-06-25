@@ -179,7 +179,7 @@ export default function AnalyticsPage() {
       className="space-y-8 max-w-7xl mx-auto"
     >
       <div className="border-b border-darkBorder/40 pb-6">
-        <h1 className="text-2xl font-black text-white tracking-tight uppercase tracking-wider text-xs font-black text-gray-400">Analytics Insights</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-white">Analytics Insights</h1>
         <p className="text-xs text-gray-500 font-bold mt-1">Real-time statistics, funnel conversions, and success ratios for your career journey</p>
       </div>
 

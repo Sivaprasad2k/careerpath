@@ -84,7 +84,7 @@ export default function TasksPrepPage() {
     >
       <div className="border-b border-darkBorder/40 pb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight uppercase tracking-wider text-xs font-black text-gray-400">Tasks & Prep</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Tasks & Prep</h1>
           <p className="text-xs text-gray-500 font-bold mt-1">Manage your active check-lists and access premium interview prep guides</p>
         </div>
         <button
